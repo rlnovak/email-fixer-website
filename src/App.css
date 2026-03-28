@@ -1,0 +1,94 @@
+/* App-specific styles */
+
+/* Ensure smooth scrolling for GSAP */
+html {
+  scroll-behavior: auto !important;
+}
+
+/* Pin spacer fix for GSAP */
+.pin-spacer {
+  pointer-events: none !important;
+}
+
+.pin-spacer > * {
+  pointer-events: auto !important;
+}
+
+/* Ensure sections stack properly */
+.pinned-section {
+  will-change: transform, opacity;
+}
+
+/* Card hover effects */
+.hover-lift {
+  transition: transform 0.2s ease-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* Button press effect */
+button:active {
+  transform: scale(0.98);
+}
+
+/* Input focus ring */
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 77, 46, 0.15);
+}
+
+/* Code block styling */
+code {
+  font-feature-settings: 'liga' 0;
+}
+
+/* Status badge animations */
+.status-success,
+.status-warning,
+.status-error,
+.status-info {
+  transition: all 0.2s ease-out;
+}
+
+/* FAQ accordion */
+.faq-item {
+  transition: background-color 0.2s ease-out;
+}
+
+/* Health bar animations */
+.bar-fill {
+  will-change: transform;
+}
+
+/* Score circle animation */
+svg circle {
+  transition: stroke-dashoffset 0.1s ease-out;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .card-shadow {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  }
+  
+  .text-display-1 {
+    font-size: 2rem;
+  }
+  
+  .text-display-2 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .bar-fill {
+    transform: scaleX(1) !important;
+  }
+  
+  svg circle {
+    transition: none !important;
+  }
+}

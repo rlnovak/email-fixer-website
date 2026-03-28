@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 100 3% 96%;
+    --foreground: 120 6% 7%;
+    --card: 0 0% 100%;
+    --card-foreground: 120 6% 7%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 120 6% 7%;
+    --primary: 11 100% 59%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 100 3% 96%;
+    --secondary-foreground: 120 6% 7%;
+    --muted: 100 3% 92%;
+    --muted-foreground: 120 2% 42%;
+    --accent: 11 100% 59%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 120 6% 7%;
+    --input: 120 6% 7%;
+    --ring: 11 100% 59%;
+    --radius: 1.75rem;
+    
+    --success: 151 65% 49%;
+    --error: 0 100% 62%;
+    --warning: 50 100% 50%;
+    --info: 217 100% 59%;
+    --dark: 140 8% 5%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+  }
+  
+  .font-mono {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+}
+
+@layer components {
+  .card-shadow {
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+  }
+  
+  .card-border {
+    border: 1px solid rgba(17, 19, 17, 0.08);
+  }
+  
+  .card-border-dark {
+    border: 1px solid rgba(255, 255, 255, 0.10);
+  }
+  
+  .text-gradient {
+    background: linear-gradient(135deg, #111311 0%, #6B6F6B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+  
+  .dot-grid {
+    background-image: radial-gradient(circle, rgba(17, 19, 17, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  
+  .status-success {
+    @apply bg-[#27D07C]/10 text-[#27D07C] border border-[#27D07C]/20;
+  }
+  
+  .status-warning {
+    @apply bg-[#FFD600]/10 text-[#B38F00] border border-[#FFD600]/20;
+  }
+  
+  .status-error {
+    @apply bg-[#FF3B3B]/10 text-[#FF3B3B] border border-[#FF3B3B]/20;
+  }
+  
+  .status-info {
+    @apply bg-[#2E83FF]/10 text-[#2E83FF] border border-[#2E83FF]/20;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .animation-paused {
+    animation-play-state: paused;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(17, 19, 17, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(17, 19, 17, 0.3);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
