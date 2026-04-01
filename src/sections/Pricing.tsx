@@ -126,7 +126,7 @@ export default function Pricing() {
           <div className="text-center mb-8">
             <div className="flex items-baseline justify-center gap-1">
               <span className="font-display font-bold text-6xl text-textprimary">
-                R$ 97
+                R$ 99
               </span>
             </div>
             <p className="text-textsecondary mt-2">Pagamento único · Sem mensalidade</p>
@@ -149,11 +149,11 @@ export default function Pricing() {
             <Button
               className="w-full sm:w-auto h-14 px-10 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition-all hover:-translate-y-0.5"
             >
-              Verificar meu domínio
+              Corrigir meu domínio — R$ 99
             </Button>
             <div className="flex items-center justify-center gap-2 mt-4 text-sm text-textsecondary">
               <Lock className="w-4 h-4" />
-              <span>Pagamento seguro · 7 dias de garantia</span>
+              <span>Pagamento seguro · Garantia de 7 dias · Sem mensalidade</span>
             </div>
           </div>
         </div>

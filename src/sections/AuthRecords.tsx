@@ -69,7 +69,8 @@ export default function AuthRecords() {
     {
       icon: FileText,
       title: 'SPF',
-      description: 'Define quem pode enviar e-mails pelo seu domínio.',
+      description: 'Lista os servidores autorizados a enviar e-mails pelo seu domínio.',
+      impact: 'Corretamente configurado. Seus e-mails têm mais chance de chegar na caixa de entrada.',
       status: 'Validado',
       statusType: 'success',
       iconBg: 'bg-green-50',
@@ -78,7 +79,8 @@ export default function AuthRecords() {
     {
       icon: Lock,
       title: 'DKIM',
-      description: 'Assinatura digital que protege contra alterações.',
+      description: 'Assina digitalmente seus e-mails para provar que não foram adulterados.',
+      impact: 'Sem assinatura DKIM, Gmail e Outlook podem marcar seus e-mails como suspeitos ou spam.',
       status: 'Incompleto',
       statusType: 'warning',
       iconBg: 'bg-yellow-50',
@@ -87,7 +89,8 @@ export default function AuthRecords() {
     {
       icon: Shield,
       title: 'DMARC',
-      description: 'Política que orienta o que fazer quando há falhas.',
+      description: 'Instrui os provedores o que fazer quando um e-mail falha nas verificações.',
+      impact: 'Sem DMARC, qualquer pessoa pode enviar e-mails fingindo ser você — seus contatos ficam expostos a phishing.',
       status: 'Não encontrado',
       statusType: 'error',
       iconBg: 'bg-red-50',
@@ -144,10 +147,16 @@ export default function AuthRecords() {
                 </span>
               </div>
 
-              {/* Description */}
-              <p className="flex-1 text-textsecondary text-sm sm:text-base">
-                {record.description}
-              </p>
+              {/* Description + impact */}
+              <div className="flex-1">
+                <p className="text-textsecondary text-sm sm:text-base">{record.description}</p>
+                <p className={`text-xs mt-1 font-medium ${
+                  record.statusType === 'success' ? 'text-green-600' :
+                  record.statusType === 'warning' ? 'text-yellow-700' : 'text-red-600'
+                }`}>
+                  {record.impact}
+                </p>
+              </div>
 
               {/* Status chip */}
               <div className={`status-chip inline-flex items-center gap-2 px-4 py-2 rounded-full w-fit ${

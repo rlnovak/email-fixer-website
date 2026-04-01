@@ -123,6 +123,20 @@ export default function HowItWorks() {
           </p>
         </div>
 
+        {/* Credibility stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
+          {[
+            { stat: 'Gmail + Yahoo', label: 'exigem SPF e DKIM desde 2024 para entregar na caixa de entrada' },
+            { stat: '+3.000', label: 'domínios .com.br já verificados na plataforma' },
+            { stat: 'R$ 99', label: 'pagamento único — sem mensalidade, sem renovação' },
+          ].map((item, i) => (
+            <div key={i} className="bg-white rounded-2xl card-border p-5 text-center">
+              <p className="font-display font-bold text-xl text-orange-500 mb-1">{item.stat}</p>
+              <p className="text-sm text-textsecondary">{item.label}</p>
+            </div>
+          ))}
+        </div>
+
         {/* Step cards */}
         <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {steps.map((step) => (

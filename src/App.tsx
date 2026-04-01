@@ -121,6 +121,20 @@ function App() {
         <Pricing />
         <FAQFooter />
       </main>
+
+      {/* Mobile sticky CTA — aparece após o diagnóstico */}
+      {scanComplete && (
+        <div className="fixed bottom-0 left-0 right-0 z-[200] sm:hidden">
+          <div className="bg-white border-t border-gray-100 px-4 pt-3 pb-4 shadow-[0_-8px_30px_rgba(0,0,0,0.10)]">
+            <button
+              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+              className="w-full h-12 bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-semibold rounded-xl text-sm transition-colors"
+            >
+              Corrigir agora — R$ 99
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

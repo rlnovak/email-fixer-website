@@ -72,7 +72,7 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
     return () => ctx.revert();
   }, []);
 
-  const headlineWords = 'Descubra por que seus e-mails vão para o spam.'.split(' ');
+  const headlineWords = 'Seus e-mails estão caindo no spam?'.split(' ');
 
   return (
     <section
@@ -90,10 +90,10 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
         className="relative w-[min(920px,86vw)] bg-white rounded-[28px] card-shadow card-border p-6 sm:p-10 lg:p-12"
       >
         {/* Tag pill */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-orange-50 border border-orange-100 rounded-full mb-6">
-          <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-          <span className="font-mono text-xs uppercase tracking-wider text-orange-600 font-medium">
-            Verificação de DNS
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 border border-green-100 rounded-full mb-6">
+          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <span className="font-mono text-xs uppercase tracking-wider text-green-700 font-medium">
+            Verificação gratuita · Sem cadastro
           </span>
         </div>
 
@@ -111,7 +111,8 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
 
         {/* Subheadline */}
         <p className="text-lg sm:text-xl text-textsecondary mb-8 max-w-xl">
-          Corrija a entregabilidade em 5 minutos. Descubra problemas de SPF, DKIM e DMARC.
+          Descubra gratuitamente o que impede seus e-mails de chegar na caixa de entrada dos seus clientes.
+          Correção completa por <strong className="text-textprimary font-semibold">R$ 99</strong> — pagamento único, sem mensalidade.
         </p>
 
         {/* Scanner Input */}
@@ -147,7 +148,7 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
 
         {/* Trust microcopy */}
         <p className="text-sm text-textsecondary mb-10">
-          Verificação instantânea · Mais de 50 blacklists · Sem cadastro
+          Diagnóstico em segundos · Mais de 50 blacklists · Sem cadastro
         </p>
 
         {/* Stats row */}
@@ -177,8 +178,8 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
               <Clock className="w-5 h-5 text-orange-500" />
             </div>
             <div>
-              <p className="font-display font-bold text-textprimary">Segundos</p>
-              <p className="text-xs text-textsecondary">para o relatório</p>
+              <p className="font-display font-bold text-textprimary">R$ 99</p>
+              <p className="text-xs text-textsecondary">pagamento único · sem mensalidade</p>
             </div>
           </div>
         </div>

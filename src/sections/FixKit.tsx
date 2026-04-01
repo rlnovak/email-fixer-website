@@ -12,6 +12,8 @@ export default function FixKit() {
   const blocksRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState<string | null>(null);
+  const [captureEmail, setCaptureEmail] = useState('');
+  const [captureRegistrar, setCaptureRegistrar] = useState('');
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -162,12 +164,43 @@ export default function FixKit() {
           ))}
         </div>
 
+        {/* Capture form */}
+        <div ref={ctaRef} className="bg-gray-50 rounded-2xl p-5 sm:p-6 mb-6">
+          <p className="font-display font-semibold text-textprimary text-sm mb-4">
+            Informe onde enviar o relatório completo:
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <input
+              type="email"
+              placeholder="seu@email.com.br"
+              value={captureEmail}
+              onChange={(e) => setCaptureEmail(e.target.value)}
+              className="flex-1 h-11 px-4 rounded-xl border border-gray-200 bg-white text-sm text-textprimary placeholder:text-textsecondary focus:outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20"
+            />
+            <select
+              value={captureRegistrar}
+              onChange={(e) => setCaptureRegistrar(e.target.value)}
+              className="h-11 px-4 rounded-xl border border-gray-200 bg-white text-sm text-textprimary focus:outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20 sm:w-52"
+            >
+              <option value="">Onde fica seu domínio?</option>
+              <option value="registro_br">Registro.br</option>
+              <option value="locaweb">Locaweb</option>
+              <option value="kinghost">KingHost</option>
+              <option value="uolhost">UOLHost</option>
+              <option value="hostgator_br">HostGator Brasil</option>
+              <option value="cloudflare">Cloudflare</option>
+              <option value="godaddy">GoDaddy</option>
+              <option value="outro">Outro</option>
+            </select>
+          </div>
+        </div>
+
         {/* CTA */}
-        <div ref={ctaRef} className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Button
             className="h-14 px-8 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition-all hover:-translate-y-0.5"
           >
-            Comprar o relatório completo — R$ 97
+            Corrigir meu domínio — R$ 99
           </Button>
           <button className="flex items-center gap-2 text-textsecondary hover:text-textprimary font-medium transition-colors group">
             Ver exemplo de relatório

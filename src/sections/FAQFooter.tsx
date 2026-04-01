@@ -77,24 +77,24 @@ export default function FAQFooter() {
 
   const faqs = [
     {
-      question: 'O que é SPF, DKIM e DMARC?',
-      answer: 'SPF (Sender Policy Framework), DKIM (DomainKeys Identified Mail) e DMARC (Domain-based Message Authentication) são protocolos de autenticação de e-mail que ajudam a prevenir spoofing e phishing. Eles verificam se o remetente está autorizado a enviar e-mails em nome de um domínio.',
+      question: 'Por que meus e-mails caem no spam mesmo sendo legítimos?',
+      answer: 'Na maioria dos casos, o problema não é o conteúdo do e-mail — é a configuração do domínio. Quando SPF, DKIM ou DMARC estão ausentes ou errados, Gmail, Outlook e outros provedores tratam seus e-mails como potencialmente fraudulentos e os jogam no spam ou rejeitam direto.',
     },
     {
-      question: 'Por que meus e-mails caem no spam?',
-      answer: 'E-mails frequentemente caem no spam devido a registros SPF, DKIM ou DMARC ausentes ou mal configurados. Isso informa aos provedores de e-mail que suas mensagens podem ser fraudulentas, levando-as a serem marcadas como spam ou rejeitadas.',
+      question: 'Funciona com Mailchimp, RD Station, ActiveCampaign e outras plataformas?',
+      answer: 'Sim. O diagnóstico verifica o domínio de onde os e-mails saem — independente da ferramenta de envio. O relatório inclui os registros DNS corretos para o seu provedor (Google Workspace, Locaweb, KingHost, etc.) e o passo a passo para adicionar no seu registrador (Registro.br, Cloudflare, GoDaddy, etc.).',
     },
     {
-      question: 'Quanto tempo leva para corrigir?',
-      answer: 'A maioria dos problemas pode ser corrigida em 5-10 minutos. Depois de adicionar os registros DNS, a propagação geralmente leva de alguns minutos até 24 horas, dependendo do seu provedor de DNS.',
+      question: 'Preciso ser técnico para aplicar as correções?',
+      answer: 'Não. O relatório tem instruções numeradas e específicas para a sua plataforma de DNS — com o texto exato para copiar e colar. Se você consegue acessar as configurações do seu domínio, consegue fazer as correções em 5 a 10 minutos.',
     },
     {
-      question: 'Preciso ser técnico para usar?',
-      answer: 'Não. Nosso relatório inclui instruções passo a passo específicas para as principais plataformas de DNS (Cloudflare, GoDaddy, Registro.br, etc.). Se você conseguir acessar as configurações de DNS do seu domínio, conseguirá fazer as correções.',
+      question: 'Quanto tempo até os e-mails pararem de cair no spam?',
+      answer: 'Após adicionar os registros DNS, a mudança começa a valer em minutos na maioria dos provedores. A propagação completa leva de 1 a 24 horas. Você pode reverificar o domínio quantas vezes quiser para confirmar que está tudo certo.',
     },
     {
       question: 'E se eu não conseguir corrigir?',
-      answer: 'Oferecemos garantia de 7 dias. Se você não conseguir corrigir seus problemas de entregabilidade com nosso relatório, devolvemos seu dinheiro. Sem perguntas.',
+      answer: 'Garantia de 7 dias sem perguntas. Se o relatório não resolver seu problema de entregabilidade, devolvemos 100% do valor. Basta enviar um e-mail para suporte@emailcorreto.com.br.',
     },
   ];
 
