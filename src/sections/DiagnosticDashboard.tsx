@@ -22,40 +22,23 @@ export default function DiagnosticDashboard({ scanComplete }: DiagnosticDashboar
     if (!section || !card || !chips) return;
 
     const ctx = gsap.context(() => {
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '+=130%',
-          pin: true,
-          scrub: 0.6,
+      // Reveal simples ao rolar até a seção (sem pin, sem exit)
+      gsap.fromTo(card,
+        { y: 24, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.6, ease: 'power2.out',
+          scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play none none none' },
         }
-      });
-
-      // ENTRANCE (0%-30%)
-      scrollTl.fromTo(card,
-        { x: '60vw', rotate: 1.5, opacity: 0 },
-        { x: 0, rotate: 0, opacity: 1, ease: 'none' },
-        0
       );
 
-      // Chips stagger
       const chipElements = chips.querySelectorAll('.metric-chip');
-      scrollTl.fromTo(chipElements,
+      gsap.fromTo(chipElements,
         { y: 18, scale: 0.98, opacity: 0 },
-        { y: 0, scale: 1, opacity: 1, stagger: 0.08, ease: 'none' },
-        0.12
+        {
+          y: 0, scale: 1, opacity: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out',
+          scrollTrigger: { trigger: chips, start: 'top 85%', toggleActions: 'play none none none' },
+        }
       );
-
-      // SETTLE (30%-70%) - hold position
-
-      // EXIT (70%-100%)
-      scrollTl.fromTo(card,
-        { x: 0, opacity: 1 },
-        { x: '-55vw', opacity: 0, ease: 'power2.in' },
-        0.7
-      );
-
     }, section);
 
     return () => ctx.revert();
@@ -65,7 +48,7 @@ export default function DiagnosticDashboard({ scanComplete }: DiagnosticDashboar
     <section
       ref={sectionRef}
       id="diagnostic"
-      className="relative w-screen h-screen flex items-center justify-center overflow-hidden z-[102]"
+      className="relative w-full flex items-center justify-center py-20 sm:py-28"
       style={{ backgroundColor: '#F6F7F6' }}
     >
       {/* Dot grid background */}

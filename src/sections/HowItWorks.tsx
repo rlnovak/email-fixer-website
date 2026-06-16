@@ -29,7 +29,7 @@ export default function HowItWorks() {
           scrollTrigger: {
             trigger: header,
             start: 'top 80%',
-            toggleActions: 'play none none reverse',
+            toggleActions: 'play none none none',
           }
         }
       );
@@ -47,7 +47,7 @@ export default function HowItWorks() {
           scrollTrigger: {
             trigger: cards,
             start: 'top 75%',
-            toggleActions: 'play none none reverse',
+            toggleActions: 'play none none none',
           }
         }
       );
@@ -65,7 +65,7 @@ export default function HowItWorks() {
           scrollTrigger: {
             trigger: cards,
             start: 'top 70%',
-            toggleActions: 'play none none reverse',
+            toggleActions: 'play none none none',
           }
         }
       );

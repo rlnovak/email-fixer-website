@@ -18,48 +18,23 @@ export default function AuthRecords() {
     if (!section || !card || !rows) return;
 
     const ctx = gsap.context(() => {
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '+=130%',
-          pin: true,
-          scrub: 0.6,
+      // Reveal simples ao rolar até a seção (sem pin, sem exit)
+      gsap.fromTo(card,
+        { y: 24, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.6, ease: 'power2.out',
+          scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play none none none' },
         }
-      });
-
-      // ENTRANCE (0%-30%)
-      scrollTl.fromTo(card,
-        { x: '-60vw', rotate: -1.5, opacity: 0 },
-        { x: 0, rotate: 0, opacity: 1, ease: 'none' },
-        0
       );
 
-      // Rows stagger
       const rowElements = rows.querySelectorAll('.record-row');
-      scrollTl.fromTo(rowElements,
-        { x: -40, opacity: 0 },
-        { x: 0, opacity: 1, stagger: 0.10, ease: 'none' },
-        0.10
+      gsap.fromTo(rowElements,
+        { y: 18, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.5, stagger: 0.10, ease: 'power2.out',
+          scrollTrigger: { trigger: rows, start: 'top 85%', toggleActions: 'play none none none' },
+        }
       );
-
-      // Status chips pop
-      const chips = rows.querySelectorAll('.status-chip');
-      scrollTl.fromTo(chips,
-        { scale: 0.92, opacity: 0 },
-        { scale: 1, opacity: 1, stagger: 0.10, ease: 'none' },
-        0.18
-      );
-
-      // SETTLE (30%-70%) - hold position
-
-      // EXIT (70%-100%)
-      scrollTl.fromTo(card,
-        { y: 0, opacity: 1 },
-        { y: '-35vh', opacity: 0, ease: 'power2.in' },
-        0.7
-      );
-
     }, section);
 
     return () => ctx.revert();
@@ -114,7 +89,7 @@ export default function AuthRecords() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-screen h-screen flex items-center justify-center overflow-hidden z-[104]"
+      className="relative w-full flex items-center justify-center py-20 sm:py-28"
       style={{ backgroundColor: '#F6F7F6' }}
     >
       {/* Dot grid background */}

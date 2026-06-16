@@ -1,11 +1,8 @@
 import { useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Search, CheckCircle, Zap, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface HeroSectionProps {
   domain: string;
@@ -44,29 +41,6 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
         { y: 30, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out', delay: 0.6 }
       );
-
-      // Scroll-driven animation
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '+=130%',
-          pin: true,
-          scrub: 0.6,
-          onLeaveBack: () => {
-            // Reset to visible when scrolling back
-            gsap.set(card, { x: 0, scale: 1, opacity: 1 });
-          }
-        }
-      });
-
-      // EXIT (70%-100%)
-      scrollTl.fromTo(card,
-        { x: 0, scale: 1, opacity: 1 },
-        { x: '-55vw', scale: 0.96, opacity: 0, ease: 'power2.in' },
-        0.7
-      );
-
     }, section);
 
     return () => ctx.revert();
@@ -78,7 +52,7 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
     <section
       ref={sectionRef}
       id="hero"
-      className="relative w-screen h-screen flex items-center justify-center overflow-hidden z-[101]"
+      className="relative w-full min-h-screen flex items-center justify-center py-20"
       style={{ backgroundColor: '#F6F7F6' }}
     >
       {/* Dot grid background */}

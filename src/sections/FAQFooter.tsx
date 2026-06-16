@@ -32,7 +32,7 @@ export default function FAQFooter() {
           scrollTrigger: {
             trigger: header,
             start: 'top 80%',
-            toggleActions: 'play none none reverse',
+            toggleActions: 'play none none none',
           }
         }
       );
@@ -50,7 +50,7 @@ export default function FAQFooter() {
           scrollTrigger: {
             trigger: faq,
             start: 'top 75%',
-            toggleActions: 'play none none reverse',
+            toggleActions: 'play none none none',
           }
         }
       );
@@ -65,7 +65,7 @@ export default function FAQFooter() {
           scrollTrigger: {
             trigger: footer,
             start: 'top 90%',
-            toggleActions: 'play none none reverse',
+            toggleActions: 'play none none none',
           }
         }
       );

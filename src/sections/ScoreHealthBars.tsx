@@ -21,54 +21,42 @@ export default function ScoreHealthBars() {
     if (!section || !card || !scoreEl || !bars) return;
 
     const ctx = gsap.context(() => {
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '+=130%',
-          pin: true,
-          scrub: 0.6,
-          onUpdate: (self) => {
-            // Animate score number during entrance
-            if (self.progress < 0.3) {
-              const newScore = Math.round((self.progress / 0.3) * 42);
-              setScore(newScore);
-            }
-          }
+      // Reveal do card + contador do score ao rolar até a seção (sem pin)
+      gsap.fromTo(card,
+        { y: 24, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.6, ease: 'power2.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+            onEnter: () => {
+              gsap.to({ v: 0 }, {
+                v: 42, duration: 0.9, ease: 'power2.out',
+                onUpdate: function () { setScore(Math.round(this.targets()[0].v)); },
+              });
+            },
+          },
         }
-      });
-
-      // ENTRANCE (0%-30%)
-      scrollTl.fromTo(card,
-        { y: '22vh', scale: 0.94, opacity: 0 },
-        { y: 0, scale: 1, opacity: 1, ease: 'none' },
-        0
       );
 
-      // Bars animation
       const barFills = bars.querySelectorAll('.bar-fill');
-      scrollTl.fromTo(barFills,
+      gsap.fromTo(barFills,
         { scaleX: 0 },
-        { scaleX: 1, stagger: 0.06, ease: 'none', transformOrigin: 'left' },
-        0.14
+        {
+          scaleX: 1, duration: 0.6, stagger: 0.06, ease: 'power2.out', transformOrigin: 'left',
+          scrollTrigger: { trigger: bars, start: 'top 85%', toggleActions: 'play none none none' },
+        }
       );
 
       const barContainers = bars.querySelectorAll('.bar-container');
-      scrollTl.fromTo(barContainers,
+      gsap.fromTo(barContainers,
         { y: 10, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.06, ease: 'none' },
-        0.14
+        {
+          y: 0, opacity: 1, duration: 0.5, stagger: 0.06, ease: 'power2.out',
+          scrollTrigger: { trigger: bars, start: 'top 85%', toggleActions: 'play none none none' },
+        }
       );
-
-      // SETTLE (30%-70%) - hold position
-
-      // EXIT (70%-100%)
-      scrollTl.fromTo(card,
-        { x: 0, opacity: 1 },
-        { x: '55vw', opacity: 0, ease: 'power2.in' },
-        0.7
-      );
-
     }, section);
 
     return () => ctx.revert();
@@ -87,7 +75,7 @@ export default function ScoreHealthBars() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-screen h-screen flex items-center justify-center overflow-hidden z-[103]"
+      className="relative w-full flex items-center justify-center py-20 sm:py-28"
       style={{ backgroundColor: '#F6F7F6' }}
     >
       {/* Dot grid background */}

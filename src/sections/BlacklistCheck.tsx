@@ -18,40 +18,23 @@ export default function BlacklistCheck() {
     if (!section || !card || !list) return;
 
     const ctx = gsap.context(() => {
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '+=130%',
-          pin: true,
-          scrub: 0.6,
+      // Reveal simples ao rolar até a seção (sem pin, sem exit)
+      gsap.fromTo(card,
+        { y: 24, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.6, ease: 'power2.out',
+          scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play none none none' },
         }
-      });
-
-      // ENTRANCE (0%-30%)
-      scrollTl.fromTo(card,
-        { y: '18vh', opacity: 0 },
-        { y: 0, opacity: 1, ease: 'none' },
-        0
       );
 
-      // List items stagger
       const items = list.querySelectorAll('.blacklist-item');
-      scrollTl.fromTo(items,
+      gsap.fromTo(items,
         { y: 14, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.03, ease: 'none' },
-        0.12
+        {
+          y: 0, opacity: 1, duration: 0.4, stagger: 0.03, ease: 'power2.out',
+          scrollTrigger: { trigger: list, start: 'top 85%', toggleActions: 'play none none none' },
+        }
       );
-
-      // SETTLE (30%-70%) - hold position
-
-      // EXIT (70%-100%)
-      scrollTl.fromTo(card,
-        { x: 0, opacity: 1 },
-        { x: '-55vw', opacity: 0, ease: 'power2.in' },
-        0.7
-      );
-
     }, section);
 
     return () => ctx.revert();
@@ -67,7 +50,7 @@ export default function BlacklistCheck() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-screen h-screen flex items-center justify-center overflow-hidden z-[105]"
+      className="relative w-full flex items-center justify-center py-20 sm:py-28"
       style={{ backgroundColor: '#F6F7F6' }}
     >
       {/* Dot grid background */}
