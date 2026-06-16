@@ -79,24 +79,24 @@ export default function HowItWorks() {
     {
       number: '1',
       icon: Search,
-      title: 'Verificação gratuita',
-      description: 'Insira seu domínio e veja o que está quebrado em segundos. Não precisa criar conta.',
+      title: 'Verificação grátis',
+      description: 'Digite seu domínio e receba o diagnóstico completo de SPF, DKIM e DMARC em 10 segundos. Sem cadastro, sem cartão.',
       color: 'bg-blue-50',
       iconColor: 'text-blue-500',
     },
     {
       number: '2',
       icon: ShoppingCart,
-      title: 'Compre o kit de correção',
-      description: 'Receba os registros DNS exatos e instruções passo a passo para sua plataforma.',
+      title: 'Compre o kit de correção — R$ 99',
+      description: 'Pagamento único. Você recebe os registros DNS prontos pra copiar e colar, com instruções específicas pro seu registrador: Registro.br, Locaweb, KingHost, HostGator e outros.',
       color: 'bg-orange-50',
       iconColor: 'text-orange-500',
     },
     {
       number: '3',
       icon: RefreshCw,
-      title: 'Reverifique gratuitamente',
-      description: 'Valide as correções quantas vezes quiser. O acesso é vitalício.',
+      title: 'Reverifique quantas vezes quiser',
+      description: 'Aplicou os registros? Reverifique de graça, quantas vezes precisar, pra sempre. Acesso vitalício, sem cobrança extra.',
       color: 'bg-green-50',
       iconColor: 'text-green-500',
     },
@@ -116,19 +116,19 @@ export default function HowItWorks() {
         {/* Header */}
         <div ref={headerRef} className="text-center mb-16">
           <h2 className="font-display font-bold text-display-2 text-textprimary mb-4">
-            Como funciona
+            Três passos pra parar de cair no spam
           </h2>
           <p className="text-lg text-textsecondary max-w-2xl mx-auto">
-            Três passos simples para corrigir a entregabilidade dos seus e-mails
+            Você vê o problema antes de pagar. Depois é copiar, colar e reverificar.
           </p>
         </div>
 
         {/* Credibility stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
           {[
-            { stat: 'Gmail + Yahoo', label: 'exigem SPF e DKIM desde 2024 para entregar na caixa de entrada' },
-            { stat: '+3.000', label: 'domínios .com.br já verificados na plataforma' },
-            { stat: 'R$ 99', label: 'pagamento único — sem mensalidade, sem renovação' },
+            { stat: '5 min', label: 'tempo médio pra aplicar a correção' },
+            { stat: 'Vitalício', label: 'reverificação ilimitada, sem mensalidade' },
+            { stat: '100%', label: 'dos registros prontos pra copiar e colar' },
           ].map((item, i) => (
             <div key={i} className="bg-white rounded-2xl card-border p-5 text-center">
               <p className="font-display font-bold text-xl text-orange-500 mb-1">{item.stat}</p>

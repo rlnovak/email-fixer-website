@@ -59,16 +59,22 @@ export default function Testimonials() {
 
   const testimonials = [
     {
-      quote: 'Em 10 minutos descobri que o DKIM estava incompleto. O passo a passo salvou meu funil de vendas.',
-      author: 'Ana R.',
-      role: 'Fundadora',
-      company: 'Startup SaaS',
+      quote: 'Eu mandava orçamento e o cliente jurava que não tinha recebido. Achei que era desculpa. Era o spam. Ajustei os três registros numa tarde e parou.',
+      author: 'Marcelo Tavares',
+      role: 'dono de marcenaria sob medida',
+      company: 'Curitiba',
     },
     {
-      quote: 'Nosso time de vendas parou de cair no spam. O retorno foi imediato, já no primeiro dia.',
-      author: 'Bruno T.',
-      role: 'Head de Growth',
-      company: 'E-commerce',
+      quote: 'Uso Google Workspace e nem sabia o que era DKIM. O diagnóstico mostrou tudo mastigado e os valores vieram prontos. Colei no Registro.br e resolveu.',
+      author: 'Fernanda Lopes',
+      role: 'consultora financeira',
+      company: 'São Paulo',
+    },
+    {
+      quote: 'Nossa taxa de abertura dobrou depois que os e-mails pararam de cair no spam. R$ 99 uma vez resolveu um problema que me custava venda todo mês.',
+      author: 'Rodrigo Menezes',
+      role: 'gestor de e-commerce',
+      company: 'Belo Horizonte',
     },
   ];
 
@@ -82,19 +88,19 @@ export default function Testimonials() {
       {/* Dot grid background */}
       <div className="absolute inset-0 dot-grid opacity-50" />
 
-      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div ref={headerRef} className="text-center mb-16">
           <h2 className="font-display font-bold text-display-2 text-textprimary mb-4">
-            O que dizem quem corrigiu
+            Quem ajustou parou de perder e-mail
           </h2>
           <p className="text-lg text-textsecondary">
-            Histórias reais de quem recuperou a entregabilidade
+            Depoimentos ilustrativos, baseados em casos comuns de quem usa o EmailCorreto.
           </p>
         </div>
 
         {/* Testimonial cards */}
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
@@ -106,7 +112,7 @@ export default function Testimonials() {
               </div>
 
               {/* Quote text */}
-              <blockquote className="text-lg text-textprimary leading-relaxed mb-6">
+              <blockquote className="text-base text-textprimary leading-relaxed mb-6">
                 "{testimonial.quote}"
               </blockquote>
 
@@ -129,6 +135,11 @@ export default function Testimonials() {
             </div>
           ))}
         </div>
+
+        {/* Disclaimer */}
+        <p className="text-center text-xs text-textsecondary mt-8">
+          Depoimentos ilustrativos para fins de demonstração.
+        </p>
       </div>
     </section>
   );

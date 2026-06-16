@@ -72,7 +72,7 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
     return () => ctx.revert();
   }, []);
 
-  const headlineWords = 'Seus e-mails estão caindo no spam?'.split(' ');
+  const headlineWords = 'Seus e-mails estão caindo no spam — e você está perdendo venda'.split(' ');
 
   return (
     <section
@@ -93,7 +93,7 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 border border-green-100 rounded-full mb-6">
           <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
           <span className="font-mono text-xs uppercase tracking-wider text-green-700 font-medium">
-            Verificação gratuita · Sem cadastro
+            Diagnóstico grátis · sem cadastro
           </span>
         </div>
 
@@ -111,8 +111,7 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
 
         {/* Subheadline */}
         <p className="text-lg sm:text-xl text-textsecondary mb-8 max-w-xl">
-          Descubra gratuitamente o que impede seus e-mails de chegar na caixa de entrada dos seus clientes.
-          Correção completa por <strong className="text-textprimary font-semibold">R$ 99</strong> — pagamento único, sem mensalidade.
+          Verifique seu domínio em 10 segundos. Corrija em 5 minutos. SPF, DKIM e DMARC ajustados pro seu provedor, prontos pra copiar e colar.
         </p>
 
         {/* Scanner Input */}
@@ -120,7 +119,7 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
           <div className="relative flex-1">
             <Input
               type="text"
-              placeholder="seuempresa.com.br"
+              placeholder="seudominio.com.br"
               value={domain}
               onChange={(e) => setDomain(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && onScan()}
@@ -140,7 +139,7 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
             ) : (
               <span className="flex items-center gap-2">
                 <Search className="w-5 h-5" />
-                Verificar agora
+                Verificar grátis
               </span>
             )}
           </Button>
@@ -148,28 +147,18 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
 
         {/* Trust microcopy */}
         <p className="text-sm text-textsecondary mb-10">
-          Diagnóstico em segundos · Mais de 50 blacklists · Sem cadastro
+          Sem cadastro. Sem cartão. Você vê o diagnóstico antes de pagar qualquer coisa.
         </p>
 
         {/* Stats row */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
-              <CheckCircle className="w-5 h-5 text-green-500" />
-            </div>
-            <div>
-              <p className="font-display font-bold text-textprimary">+2.000</p>
-              <p className="text-xs text-textsecondary">domínios verificados</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
               <Zap className="w-5 h-5 text-blue-500" />
             </div>
             <div>
-              <p className="font-display font-bold text-textprimary">Google/Microsoft</p>
-              <p className="text-xs text-textsecondary">totalmente compatível</p>
+              <p className="font-display font-bold text-textprimary">10s</p>
+              <p className="text-xs text-textsecondary">para o diagnóstico completo</p>
             </div>
           </div>
 
@@ -179,7 +168,17 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
             </div>
             <div>
               <p className="font-display font-bold text-textprimary">R$ 99</p>
-              <p className="text-xs text-textsecondary">pagamento único · sem mensalidade</p>
+              <p className="text-xs text-textsecondary">pagamento único, sem mensalidade</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+              <CheckCircle className="w-5 h-5 text-green-500" />
+            </div>
+            <div>
+              <p className="font-display font-bold text-textprimary">7 dias</p>
+              <p className="text-xs text-textsecondary">de garantia ou seu dinheiro de volta</p>
             </div>
           </div>
         </div>

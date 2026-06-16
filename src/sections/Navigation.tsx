@@ -25,9 +25,8 @@ export default function Navigation() {
 
   const navLinks = [
     { label: 'Como funciona', id: 'how-it-works' },
-    { label: 'Depoimentos', id: 'testimonials' },
     { label: 'Preço', id: 'pricing' },
-    { label: 'FAQ', id: 'faq' },
+    { label: 'Dúvidas', id: 'faq' },
   ];
 
   return (

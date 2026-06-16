@@ -1,7 +1,7 @@
 import { useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { CheckCircle, AlertTriangle, Shield, Globe, TrendingUp, ChevronRight } from 'lucide-react';
+import { CheckCircle, AlertTriangle, Shield, Globe, TrendingDown, ChevronRight } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -77,11 +77,16 @@ export default function DiagnosticDashboard({ scanComplete }: DiagnosticDashboar
         className="relative w-[min(980px,88vw)] bg-white rounded-[28px] card-shadow card-border p-6 sm:p-10"
       >
         {/* Header row */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <h2 className="font-display font-bold text-display-2 text-textprimary">
-            Diagnóstico de entregabilidade
-          </h2>
-          <div className="inline-flex items-center gap-2 px-4 py-2 status-success rounded-full w-fit">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">
+          <div>
+            <h2 className="font-display font-bold text-display-2 text-textprimary">
+              Seu diagnóstico, em segundos
+            </h2>
+            <p className="text-textsecondary mt-2 max-w-md">
+              A gente lê os registros reais do seu domínio — não um palpite genérico.
+            </p>
+          </div>
+          <div className="inline-flex items-center gap-2 px-4 py-2 status-success rounded-full w-fit flex-shrink-0">
             <CheckCircle className="w-4 h-4" />
             <span className="font-mono text-xs uppercase tracking-wider font-medium">
               Concluído
@@ -113,6 +118,9 @@ export default function DiagnosticDashboard({ scanComplete }: DiagnosticDashboar
             <p className="font-display font-semibold text-lg text-textprimary">
               Google Workspace
             </p>
+            <p className="text-xs text-textsecondary mt-1">
+              detectado automaticamente via MX
+            </p>
           </div>
         </div>
 
@@ -124,7 +132,7 @@ export default function DiagnosticDashboard({ scanComplete }: DiagnosticDashboar
             </div>
             <div>
               <p className="font-mono text-xs uppercase tracking-wider text-green-700">Blacklists</p>
-              <p className="font-display font-semibold text-green-800">0 listagens</p>
+              <p className="font-display font-semibold text-green-800">Limpo · 0 listas</p>
             </div>
           </div>
 
@@ -134,17 +142,17 @@ export default function DiagnosticDashboard({ scanComplete }: DiagnosticDashboar
             </div>
             <div>
               <p className="font-mono text-xs uppercase tracking-wider text-yellow-700">Autenticação</p>
-              <p className="font-display font-semibold text-yellow-800">2 problemas</p>
+              <p className="font-display font-semibold text-yellow-800">2 de 3 falhando</p>
             </div>
           </div>
 
-          <div className="metric-chip flex items-center gap-3 p-4 status-info rounded-2xl">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 text-blue-600" />
+          <div className="metric-chip flex items-center gap-3 p-4 status-error rounded-2xl">
+            <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
+              <TrendingDown className="w-5 h-5 text-red-600" />
             </div>
             <div>
-              <p className="font-mono text-xs uppercase tracking-wider text-blue-700">Reputação</p>
-              <p className="font-display font-semibold text-blue-800">Estável</p>
+              <p className="font-mono text-xs uppercase tracking-wider text-red-700">Reputação</p>
+              <p className="font-display font-semibold text-red-800">Em risco</p>
             </div>
           </div>
         </div>

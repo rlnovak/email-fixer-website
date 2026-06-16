@@ -77,24 +77,24 @@ export default function FAQFooter() {
 
   const faqs = [
     {
-      question: 'Por que meus e-mails caem no spam mesmo sendo legítimos?',
-      answer: 'Na maioria dos casos, o problema não é o conteúdo do e-mail — é a configuração do domínio. Quando SPF, DKIM ou DMARC estão ausentes ou errados, Gmail, Outlook e outros provedores tratam seus e-mails como potencialmente fraudulentos e os jogam no spam ou rejeitam direto.',
+      question: 'Por que meus e-mails caem no spam?',
+      answer: 'Na maioria das vezes é falha de autenticação: SPF, DKIM ou DMARC configurados errado ou ausentes. Sem eles, o Gmail e o Outlook não confiam no seu envio e jogam tudo no spam. O EmailCorreto identifica exatamente qual dos três está te derrubando.',
     },
     {
-      question: 'Funciona com Mailchimp, RD Station, ActiveCampaign e outras plataformas?',
-      answer: 'Sim. O diagnóstico verifica o domínio de onde os e-mails saem — independente da ferramenta de envio. O relatório inclui os registros DNS corretos para o seu provedor (Google Workspace, Locaweb, KingHost, etc.) e o passo a passo para adicionar no seu registrador (Registro.br, Cloudflare, GoDaddy, etc.).',
+      question: 'Funciona com Mailchimp, RD Station e outras ferramentas de e-mail?',
+      answer: 'Sim. O diagnóstico é do seu domínio, não da ferramenta. Depois de ajustar SPF, DKIM e DMARC, seus envios pelo Mailchimp, RD Station, Brevo ou qualquer outra plataforma passam a ser autenticados corretamente e param de cair no spam.',
     },
     {
-      question: 'Preciso ser técnico para aplicar as correções?',
-      answer: 'Não. O relatório tem instruções numeradas e específicas para a sua plataforma de DNS — com o texto exato para copiar e colar. Se você consegue acessar as configurações do seu domínio, consegue fazer as correções em 5 a 10 minutos.',
+      question: 'Preciso entender de tecnologia pra aplicar?',
+      answer: 'Não. Você recebe os registros prontos pra copiar e colar, com o passo a passo do seu registrador — Registro.br, Locaweb, KingHost, HostGator e outros. Se souber acessar o painel do seu domínio, você consegue. Em média leva 5 minutos.',
     },
     {
-      question: 'Quanto tempo até os e-mails pararem de cair no spam?',
-      answer: 'Após adicionar os registros DNS, a mudança começa a valer em minutos na maioria dos provedores. A propagação completa leva de 1 a 24 horas. Você pode reverificar o domínio quantas vezes quiser para confirmar que está tudo certo.',
+      question: 'Quanto tempo até parar de cair no spam?',
+      answer: 'A aplicação leva uns 5 minutos. Os registros DNS costumam propagar de poucos minutos até algumas horas, dependendo do registrador. Você pode reverificar de graça quantas vezes quiser até o score subir.',
     },
     {
-      question: 'E se eu não conseguir corrigir?',
-      answer: 'Garantia de 7 dias sem perguntas. Se o relatório não resolver seu problema de entregabilidade, devolvemos 100% do valor. Basta enviar um e-mail para suporte@emailcorreto.com.br.',
+      question: 'E se não funcionar?',
+      answer: 'Você tem 7 dias de garantia. Se o kit não resolver, devolvemos os R$ 99 — sem perguntas. E como a verificação inicial é grátis, você só paga depois de já ter visto o diagnóstico do seu domínio.',
     },
   ];
 
@@ -119,7 +119,7 @@ export default function FAQFooter() {
         {/* Header */}
         <div ref={headerRef} className="text-center mb-12">
           <h2 className="font-display font-bold text-display-2 text-textprimary mb-4">
-            Perguntas frequentes
+            Dúvidas
           </h2>
           <p className="text-lg text-textsecondary">
             Tire suas dúvidas sobre o EmailCorreto
@@ -176,7 +176,7 @@ export default function FAQFooter() {
                 </span>
               </div>
               <p className="text-textsecondary mb-4 max-w-sm">
-                Corrija sua entregabilidade em minutos. Descubra e resolva problemas de SPF, DKIM e DMARC.
+                EmailCorreto — seus e-mails na caixa de entrada, onde eles deveriam estar.
               </p>
               <div className="flex items-center gap-2 text-sm text-textsecondary">
                 <MessageCircle className="w-4 h-4" />
@@ -194,9 +194,8 @@ export default function FAQFooter() {
               <ul className="space-y-3">
                 {[
                   { label: 'Como funciona', id: 'how-it-works' },
-                  { label: 'Depoimentos', id: 'testimonials' },
                   { label: 'Preço', id: 'pricing' },
-                  { label: 'FAQ', id: 'faq' },
+                  { label: 'Dúvidas', id: 'faq' },
                 ].map((link) => (
                   <li key={link.id}>
                     <button

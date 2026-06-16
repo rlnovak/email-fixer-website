@@ -69,28 +69,28 @@ export default function AuthRecords() {
     {
       icon: FileText,
       title: 'SPF',
-      description: 'Lista os servidores autorizados a enviar e-mails pelo seu domínio.',
-      impact: 'Corretamente configurado. Seus e-mails têm mais chance de chegar na caixa de entrada.',
-      status: 'Validado',
-      statusType: 'success',
-      iconBg: 'bg-green-50',
-      iconColor: 'text-green-500',
+      description: 'Diz quais servidores têm permissão pra enviar e-mail em nome do seu domínio.',
+      impact: 'Sem SPF correto, qualquer servidor pode se passar por você — e o Gmail joga seu e-mail no spam.',
+      status: 'Configurado errado',
+      statusType: 'error',
+      iconBg: 'bg-red-50',
+      iconColor: 'text-red-500',
     },
     {
       icon: Lock,
       title: 'DKIM',
-      description: 'Assina digitalmente seus e-mails para provar que não foram adulterados.',
-      impact: 'Sem assinatura DKIM, Gmail e Outlook podem marcar seus e-mails como suspeitos ou spam.',
-      status: 'Incompleto',
-      statusType: 'warning',
-      iconBg: 'bg-yellow-50',
-      iconColor: 'text-yellow-500',
+      description: 'Assina cada e-mail com uma chave que prova que ele saiu mesmo do seu domínio.',
+      impact: 'Sem DKIM, o provedor do destinatário não confia no envio e a entrega despenca.',
+      status: 'Ausente',
+      statusType: 'error',
+      iconBg: 'bg-red-50',
+      iconColor: 'text-red-500',
     },
     {
       icon: Shield,
       title: 'DMARC',
-      description: 'Instrui os provedores o que fazer quando um e-mail falha nas verificações.',
-      impact: 'Sem DMARC, qualquer pessoa pode enviar e-mails fingindo ser você — seus contatos ficam expostos a phishing.',
+      description: 'Define a regra do que fazer quando um e-mail falha na verificação.',
+      impact: 'Sem DMARC, golpistas usam seu domínio em fraudes e queimam sua reputação.',
       status: 'Não encontrado',
       statusType: 'error',
       iconBg: 'bg-red-50',
@@ -127,7 +127,7 @@ export default function AuthRecords() {
       >
         {/* Header */}
         <h2 className="font-display font-bold text-display-2 text-textprimary mb-8">
-          Registros de autenticação
+          Os 3 registros que decidem se seu e-mail chega
         </h2>
 
         {/* Record rows */}

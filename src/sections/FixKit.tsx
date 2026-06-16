@@ -98,12 +98,10 @@ export default function FixKit() {
     <section
       ref={sectionRef}
       className="relative w-screen h-screen flex items-center justify-center overflow-hidden z-[106]"
-      style={{ backgroundColor: '#0B0D0C' }}
+      style={{ backgroundColor: '#F6F7F6' }}
     >
-      {/* Subtle pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 dot-grid" style={{ filter: 'invert(1)' }} />
-      </div>
+      {/* Dot grid background */}
+      <div className="absolute inset-0 dot-grid opacity-50" />
 
       {/* Fix Kit Card */}
       <div
@@ -155,7 +153,7 @@ export default function FixKit() {
                   )}
                 </button>
               </div>
-              <div className="p-4 bg-gray-900 rounded-xl overflow-x-auto">
+              <div className="p-4 bg-[#15171A] rounded-xl overflow-x-auto border border-black/5">
                 <code className="font-mono text-sm text-green-400 whitespace-nowrap">
                   {record.value}
                 </code>

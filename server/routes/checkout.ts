@@ -7,15 +7,17 @@ import { getSupabase } from '../lib/supabase.js';
 
   create table orders (
     id            uuid primary key default gen_random_uuid(),
-    domain        text not null,
-    email         text not null,
-    registrar     text,
-    status        text not null default 'pending',  -- 'pending' | 'paid'
-    amount_brl    integer not null default 99,
+    domain         text not null,
+    email          text not null,
+    registrar      text,
+    email_provider text,                              -- override manual; null = usar detecção do scan
+    status         text not null default 'pending',   -- 'pending' | 'paid'
+    amount_brl     integer not null default 99,
     stripe_session_id text,
-    scan_result   jsonb,
-    delivered_at  timestamptz,
-    created_at    timestamptz default now()
+    scan_result    jsonb,                             -- ScanResult salvo no checkout
+    fix_result     jsonb,                             -- FixResult gerado no webhook após pagamento
+    delivered_at   timestamptz,
+    created_at     timestamptz default now()
   );
 */
 
@@ -27,10 +29,11 @@ function getStripe(): Stripe {
 const router = Router();
 
 router.post('/', async (req, res) => {
-  const { domain, email, registrar, scanResult } = req.body as {
+  const { domain, email, registrar, emailProvider, scanResult } = req.body as {
     domain?: unknown;
     email?: unknown;
     registrar?: unknown;
+    emailProvider?: unknown;  // opcional — override manual da detecção automática
     scanResult?: unknown;
   };
 
@@ -50,6 +53,7 @@ router.post('/', async (req, res) => {
       domain,
       email,
       registrar: typeof registrar === 'string' ? registrar : null,
+      email_provider: typeof emailProvider === 'string' ? emailProvider : null,
       status: 'pending',
       amount_brl: 99,
       scan_result: scanResult ?? null,

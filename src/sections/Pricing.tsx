@@ -75,12 +75,12 @@ export default function Pricing() {
   }, []);
 
   const features = [
-    'Registros SPF, DKIM, DMARC prontos',
-    'Verificação em mais de 50 blacklists',
-    'Instruções para sua plataforma de DNS',
-    'Reverificações ilimitadas',
-    'Suporte por e-mail',
-    'Garantia de 7 dias',
+    'Diagnóstico completo de SPF, DKIM e DMARC',
+    'Registros DNS prontos pra copiar e colar',
+    'Instruções passo a passo pro seu registrador brasileiro',
+    'Detecção automática do seu provedor de e-mail',
+    'Reverificação ilimitada e acesso vitalício',
+    'Suporte por e-mail em português',
   ];
 
   return (
@@ -100,7 +100,7 @@ export default function Pricing() {
             Preço simples
           </h2>
           <p className="text-lg text-textsecondary">
-            Sem assinatura. Pague uma vez, use para sempre.
+            Sem assinatura. Pague uma vez, use pra sempre.
           </p>
         </div>
 
@@ -114,11 +114,11 @@ export default function Pricing() {
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-orange-50 border border-orange-100 rounded-full mb-4">
               <Shield className="w-4 h-4 text-orange-500" />
               <span className="font-mono text-xs uppercase tracking-wider text-orange-600 font-medium">
-                Relatório completo
+                Pagamento único
               </span>
             </div>
             <h3 className="font-display font-bold text-2xl text-textprimary mb-2">
-              Relatório completo de entregabilidade
+              Kit de Correção EmailCorreto
             </h3>
           </div>
 
@@ -129,7 +129,7 @@ export default function Pricing() {
                 R$ 99
               </span>
             </div>
-            <p className="text-textsecondary mt-2">Pagamento único · Sem mensalidade</p>
+            <p className="text-textsecondary mt-2">Pagamento único · Sem mensalidade · Nunca</p>
           </div>
 
           {/* Features */}
@@ -149,11 +149,11 @@ export default function Pricing() {
             <Button
               className="w-full sm:w-auto h-14 px-10 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition-all hover:-translate-y-0.5"
             >
-              Corrigir meu domínio — R$ 99
+              Quero corrigir meu domínio
             </Button>
-            <div className="flex items-center justify-center gap-2 mt-4 text-sm text-textsecondary">
-              <Lock className="w-4 h-4" />
-              <span>Pagamento seguro · Garantia de 7 dias · Sem mensalidade</span>
+            <div className="flex items-start justify-center gap-2 mt-4 text-sm text-textsecondary max-w-md mx-auto">
+              <Lock className="w-4 h-4 flex-shrink-0 mt-0.5" />
+              <span>Garantia de 7 dias. Se não funcionar, devolvemos seu dinheiro — sem perguntas. Pagamento seguro.</span>
             </div>
           </div>
         </div>

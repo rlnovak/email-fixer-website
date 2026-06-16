@@ -4,6 +4,9 @@ import Stripe from 'stripe';
 import { Resend } from 'resend';
 import { getSupabase } from '../lib/supabase.js';
 import { buildEmailHtml } from '../lib/email.js';
+import { generateFix } from '../../../email-fixer-code/src/generator.js';
+import type { Registrar, EmailProvider } from '../../../email-fixer-code/src/generator.js';
+import type { ScanResult } from '../../../email-fixer-code/src/scanner.js';
 
 let _stripe: Stripe | null = null;
 function getStripe(): Stripe {
@@ -81,10 +84,39 @@ async function handleWebhook(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  // 1. Atualizar status para 'paid'
+  // 1. Carregar o pedido (scan_result + registrar) para gerar a correção
+  const { data: order, error: loadError } = await getSupabase()
+    .from('orders')
+    .select('scan_result, registrar, email_provider')
+    .eq('id', order_id)
+    .single();
+
+  if (loadError || !order) {
+    console.error('[webhook] Pedido não encontrado ao gerar fix:', order_id, loadError);
+    res.status(500).send('Pedido não encontrado.');
+    return;
+  }
+
+  // 2. Gerar os registros corrigidos a partir do scan salvo no checkout.
+  //    O provedor é o detectado no scan, salvo se o cliente tiver feito override.
+  let fixResult = null;
+  try {
+    const scan = order.scan_result as ScanResult | null;
+    if (scan && scan.domainExists) {
+      const registrar = (order.registrar as Registrar | null) ?? 'other';
+      const override = (order.email_provider as EmailProvider | null) ?? undefined;
+      fixResult = generateFix(scan, registrar, override);
+    } else {
+      console.warn('[webhook] scan_result ausente/ inválido no pedido', order_id);
+    }
+  } catch (err) {
+    console.error('[webhook] Falha ao gerar fix (seguindo sem bloquear o pagamento):', err);
+  }
+
+  // 3. Atualizar status para 'paid' e persistir o fix gerado
   const { error: updateError } = await getSupabase()
     .from('orders')
-    .update({ status: 'paid', stripe_session_id: session.id })
+    .update({ status: 'paid', stripe_session_id: session.id, fix_result: fixResult })
     .eq('id', order_id);
 
   if (updateError) {
@@ -93,7 +125,7 @@ async function handleWebhook(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  // 2. Enviar e-mail com retry (falha não causa retry do webhook — evita duplicatas)
+  // 4. Enviar e-mail com retry (falha não causa retry do webhook — evita duplicatas)
   try {
     await sendEmailWithRetry(email, domain, order_id);
     await getSupabase()

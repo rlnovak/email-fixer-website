@@ -4,6 +4,7 @@ import cors from 'cors';
 import scanRouter from './routes/scan.js';
 import checkoutRouter from './routes/checkout.js';
 import webhookRouter from './routes/webhook.js';
+import reportRouter from './routes/report.js';
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 3001);
@@ -22,6 +23,7 @@ app.use(express.json());
 
 app.use('/api/scan', scanRouter);
 app.use('/api/checkout', checkoutRouter);
+app.use('/api/report', reportRouter);
 
 // Health check
 app.get('/api/health', (_req, res) => {

@@ -9,6 +9,7 @@ export type OrderInsert = {
   domain: string;
   email: string;
   registrar?: string | null;
+  email_provider?: string | null;
   status?: string;
   amount_brl?: number;
   scan_result?: unknown;
@@ -19,10 +20,12 @@ export type OrderRow = {
   domain: string;
   email: string;
   registrar: string | null;
+  email_provider: string | null;
   status: string;
   amount_brl: number;
   stripe_session_id: string | null;
   scan_result: unknown;
+  fix_result: unknown;
   delivered_at: string | null;
   created_at: string;
 };

@@ -31,7 +31,7 @@ export default function ScoreHealthBars() {
           onUpdate: (self) => {
             // Animate score number during entrance
             if (self.progress < 0.3) {
-              const newScore = Math.round((self.progress / 0.3) * 72);
+              const newScore = Math.round((self.progress / 0.3) * 42);
               setScore(newScore);
             }
           }
@@ -75,8 +75,8 @@ export default function ScoreHealthBars() {
   }, []);
 
   const healthBars = [
-    { label: 'SPF', percentage: 100, color: 'bg-green-500', status: 'Configurado' },
-    { label: 'DKIM', percentage: 45, color: 'bg-yellow-500', status: 'Incompleto' },
+    { label: 'SPF', percentage: 40, color: 'bg-red-500', status: 'Configurado errado' },
+    { label: 'DKIM', percentage: 0, color: 'bg-red-500', status: 'Ausente' },
     { label: 'DMARC', percentage: 0, color: 'bg-red-500', status: 'Não encontrado' },
   ];
 
@@ -98,6 +98,11 @@ export default function ScoreHealthBars() {
         ref={cardRef}
         className="relative w-[min(920px,86vw)] bg-white rounded-[28px] card-shadow card-border p-6 sm:p-10"
       >
+        {/* Section title */}
+        <h2 className="font-display font-bold text-display-2 text-textprimary text-center mb-8">
+          Sua pontuação de entregabilidade
+        </h2>
+
         {/* Score circle */}
         <div ref={scoreRef} className="flex flex-col items-center mb-10">
           <div className="relative w-48 h-48 mb-4">
@@ -148,8 +153,8 @@ export default function ScoreHealthBars() {
                     {bar.label}
                   </span>
                   <span className={`text-sm ${
-                    bar.percentage === 100 ? 'text-green-600' :
-                    bar.percentage > 0 ? 'text-yellow-600' : 'text-red-600'
+                    bar.color === 'bg-green-500' ? 'text-green-600' :
+                    bar.color === 'bg-yellow-500' ? 'text-yellow-600' : 'text-red-600'
                   }`}>
                     {bar.status}
                   </span>
@@ -172,7 +177,7 @@ export default function ScoreHealthBars() {
         <div className="flex items-start gap-3 p-4 bg-orange-50 rounded-2xl">
           <Info className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
           <p className="text-sm text-orange-700">
-            Pequenos ajustes de DNS podem recuperar de <strong>15–30 pontos</strong> na sua pontuação.
+            Pequenos ajustes nos seus registros recuperam de <strong>15 a 30 pontos</strong>. É a diferença entre cair no spam e cair na caixa de entrada.
           </p>
         </div>
       </div>

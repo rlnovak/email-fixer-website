@@ -11,6 +11,8 @@ import ScoreHealthBars from './sections/ScoreHealthBars';
 import AuthRecords from './sections/AuthRecords';
 import BlacklistCheck from './sections/BlacklistCheck';
 import FixKit from './sections/FixKit';
+import SpamToInbox from './sections/SpamToInbox';
+import WhyNotChatGPT from './sections/WhyNotChatGPT';
 import HowItWorks from './sections/HowItWorks';
 import Testimonials from './sections/Testimonials';
 import Pricing from './sections/Pricing';
@@ -116,6 +118,8 @@ function App() {
         </div>
         
         {/* Flowing Sections */}
+        <SpamToInbox />
+        <WhyNotChatGPT />
         <HowItWorks />
         <Testimonials />
         <Pricing />
