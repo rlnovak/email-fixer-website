@@ -10,6 +10,7 @@ import AuthRecords from './sections/AuthRecords';
 import BlacklistCheck from './sections/BlacklistCheck';
 import FixKit from './sections/FixKit';
 import SpamToInbox from './sections/SpamToInbox';
+import DeliverySimulation from './sections/DeliverySimulation';
 import WhyNotChatGPT from './sections/WhyNotChatGPT';
 import HowItWorks from './sections/HowItWorks';
 import Testimonials from './sections/Testimonials';
@@ -56,6 +57,7 @@ function App() {
         <AuthRecords />
         <BlacklistCheck />
         <FixKit />
+        <DeliverySimulation />
         <SpamToInbox />
         <WhyNotChatGPT />
         <HowItWorks />
