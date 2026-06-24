@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { scanDomain } from './lib/api';
 import './App.css';
 
 // Import sections
@@ -18,22 +20,23 @@ import Pricing from './sections/Pricing';
 import FAQFooter from './sections/FAQFooter';
 
 function App() {
+  const navigate = useNavigate();
   const [domain, setDomain] = useState('');
   const [scanning, setScanning] = useState(false);
-  const [scanComplete, setScanComplete] = useState(false);
+  const [scanError, setScanError] = useState<string | null>(null);
 
-  const handleScan = () => {
-    if (!domain) return;
+  const handleScan = async () => {
+    if (!domain || scanning) return;
     setScanning(true);
-    setTimeout(() => {
+    setScanError(null);
+    try {
+      const result = await scanDomain(domain);
+      // Leva o resultado real para a página de diagnóstico via state de navegação.
+      navigate('/diagnostico', { state: { scan: result } });
+    } catch (err) {
+      setScanError(err instanceof Error ? err.message : 'Erro ao escanear. Tente novamente.');
       setScanning(false);
-      setScanComplete(true);
-      // Scroll to next section
-      const diagnosticSection = document.getElementById('diagnostic');
-      if (diagnosticSection) {
-        diagnosticSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 2000);
+    }
   };
 
   return (
@@ -51,8 +54,9 @@ function App() {
           setDomain={setDomain}
           scanning={scanning}
           onScan={handleScan}
+          error={scanError}
         />
-        <DiagnosticDashboard scanComplete={scanComplete} />
+        <DiagnosticDashboard scanComplete={true} />
         <ScoreHealthBars />
         <AuthRecords />
         <BlacklistCheck />
@@ -66,19 +70,17 @@ function App() {
         <FAQFooter />
       </main>
 
-      {/* Mobile sticky CTA — aparece após o diagnóstico */}
-      {scanComplete && (
-        <div className="fixed bottom-0 left-0 right-0 z-[200] sm:hidden">
-          <div className="bg-white border-t border-gray-100 px-4 pt-3 pb-4 shadow-[0_-8px_30px_rgba(0,0,0,0.10)]">
-            <button
-              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
-              className="w-full h-12 bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-semibold rounded-xl text-sm transition-colors"
-            >
-              Corrigir agora — R$ 99
-            </button>
-          </div>
+      {/* Mobile sticky CTA — leva o usuário de volta ao campo de scan */}
+      <div className="fixed bottom-0 left-0 right-0 z-[200] sm:hidden">
+        <div className="bg-white border-t border-gray-100 px-4 pt-3 pb-4 shadow-[0_-8px_30px_rgba(0,0,0,0.10)]">
+          <button
+            onClick={() => document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' })}
+            className="w-full h-12 bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-semibold rounded-xl text-sm transition-colors"
+          >
+            Verificar meu domínio grátis
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }

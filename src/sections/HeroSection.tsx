@@ -9,9 +9,10 @@ interface HeroSectionProps {
   setDomain: (value: string) => void;
   scanning: boolean;
   onScan: () => void;
+  error?: string | null;
 }
 
-export default function HeroSection({ domain, setDomain, scanning, onScan }: HeroSectionProps) {
+export default function HeroSection({ domain, setDomain, scanning, onScan, error }: HeroSectionProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
@@ -118,6 +119,13 @@ export default function HeroSection({ domain, setDomain, scanning, onScan }: Her
             )}
           </Button>
         </div>
+
+        {/* Erro de scan */}
+        {error && (
+          <p className="text-sm text-[#FF3B3B] mb-4 -mt-1">
+            {error}
+          </p>
+        )}
 
         {/* Trust microcopy */}
         <p className="text-sm text-textsecondary mb-10">
