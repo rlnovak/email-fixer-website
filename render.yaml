@@ -1,0 +1,36 @@
+# Render — backend EmailCorreto (API Express).
+# O frontend roda no Cloudflare Pages; este serviço é só a API.
+# O core (scanner/generator) está vendorado em server/core/, então o repo
+# email-fixer-website é autossuficiente — Render clona só este repo.
+
+services:
+  - type: web
+    name: emailcorreto-api
+    runtime: node
+    region: oregon          # Render free só tem regiões nos EUA; oregon é o padrão
+    plan: free
+    branch: main
+    buildCommand: npm ci
+    # tsx (devDependency) roda o TypeScript do servidor direto, sem passo de build.
+    startCommand: node_modules/.bin/tsx server/index.ts
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_URL
+        value: https://email-fixer-website.pages.dev
+      - key: ALLOWED_ORIGINS
+        value: https://email-fixer-website.pages.dev,http://localhost:5173
+      # Secrets — defina no painel do Render (Environment), não aqui:
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM
+        sync: false

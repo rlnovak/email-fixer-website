@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { scanDomain } from '../../../email-fixer-code/src/scanner.js';
-import type { ScanResult } from '../../../email-fixer-code/src/scanner.js';
+import { scanDomain } from '../core/scanner.js';
+import type { ScanResult } from '../core/scanner.js';
 
 const router = Router();
 

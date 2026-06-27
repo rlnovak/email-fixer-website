@@ -4,9 +4,9 @@ import Stripe from 'stripe';
 import { Resend } from 'resend';
 import { getSupabase } from '../lib/supabase.js';
 import { buildEmailHtml } from '../lib/email.js';
-import { generateFix } from '../../../email-fixer-code/src/generator.js';
-import type { Registrar, EmailProvider } from '../../../email-fixer-code/src/generator.js';
-import type { ScanResult } from '../../../email-fixer-code/src/scanner.js';
+import { generateFix } from '../core/generator.js';
+import type { Registrar, EmailProvider } from '../core/generator.js';
+import type { ScanResult } from '../core/scanner.js';
 
 let _stripe: Stripe | null = null;
 function getStripe(): Stripe {
