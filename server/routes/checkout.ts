@@ -92,7 +92,9 @@ router.post('/', async (req, res) => {
         email,
         registrar: typeof registrar === 'string' ? registrar : '',
       },
-      success_url: `${process.env.APP_URL}/sucesso?order_id=${order.id}`,
+      // Após pagar, leva direto à página do relatório. O webhook gera o fix de
+      // forma assíncrona; a ReportPage trata o caso de "ainda gerando" (409).
+      success_url: `${process.env.APP_URL}/relatorio?order=${order.id}`,
       cancel_url: `${process.env.APP_URL}/?cancelado=1`,
     });
 

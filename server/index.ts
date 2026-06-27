@@ -14,9 +14,28 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = Number(process.env.PORT ?? 3001);
 
-// CORS: apenas a origem do Vite em desenvolvimento
+// CORS: o frontend (Cloudflare Pages) e o backend (Fly.io) ficam em origens
+// diferentes. ALLOWED_ORIGINS é uma lista separada por vírgula; cai para a
+// origem do Pages + localhost em dev se não definida.
+const allowedOrigins = (
+  process.env.ALLOWED_ORIGINS ??
+  'http://localhost:5173,https://email-fixer-website.pages.dev'
+)
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+
 app.use(cors({
-  origin: process.env.APP_URL ?? 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // Permite requests sem Origin (curl, Stripe webhook server-to-server).
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    // Aceita qualquer subdomínio *.pages.dev (previews do Cloudflare Pages).
+    if (/^https:\/\/[a-z0-9-]+\.email-fixer-website\.pages\.dev$/i.test(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`Origem não permitida pelo CORS: ${origin}`));
+  },
   methods: ['GET', 'POST'],
 }));
 

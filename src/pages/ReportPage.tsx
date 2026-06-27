@@ -98,10 +98,37 @@ export default function ReportPage() {
       setLoading(false);
       return;
     }
-    fetchReport(orderId)
-      .then(setReport)
-      .catch((e) => setError(e instanceof Error ? e.message : 'Erro ao carregar o relatório.'))
-      .finally(() => setLoading(false));
+
+    let cancelled = false;
+    let attempts = 0;
+
+    // O webhook do Stripe gera o relatório de forma assíncrona logo após o
+    // pagamento. Se o usuário chegar antes (409 "ainda gerando"), tenta de novo
+    // por alguns segundos antes de mostrar erro.
+    async function load() {
+      try {
+        const r = await fetchReport(orderId!);
+        if (!cancelled) {
+          setReport(r);
+          setLoading(false);
+        }
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : 'Erro ao carregar o relatório.';
+        const stillGenerating = /ainda não foi gerado|pendente/i.test(msg);
+        if (stillGenerating && attempts < 5 && !cancelled) {
+          attempts += 1;
+          setTimeout(load, 2500);
+          return;
+        }
+        if (!cancelled) {
+          setError(msg);
+          setLoading(false);
+        }
+      }
+    }
+
+    load();
+    return () => { cancelled = true; };
   }, [orderId]);
 
   return (
