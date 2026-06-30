@@ -3,7 +3,7 @@ import dns from "dns/promises";
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type Status = "pass" | "warning" | "fail";
-export type DnsError = "nxdomain" | "timeout" | "servfail" | null;
+export type DnsError = "nxdomain" | "nodata" | "timeout" | "servfail" | null;
 
 /**
  * Provedores de email suportados. Definido aqui (e não no generator) porque a
@@ -123,7 +123,11 @@ async function resolveTxtSafe(name: string): Promise<DnsResolution> {
     if (err instanceof Error) {
       if (err.message === "DNS_TIMEOUT") return { records: [], error: "timeout" };
       const code = (err as NodeJS.ErrnoException).code;
-      if (code === "ENOTFOUND" || code === "ENODATA") return { records: [], error: "nxdomain" };
+      // ENOTFOUND = domínio não existe (NXDOMAIN real).
+      // ENODATA = domínio existe, mas não tem registro TXT desse nome — NÃO é
+      // domínio inexistente; muitos domínios válidos não têm TXT na raiz.
+      if (code === "ENOTFOUND") return { records: [], error: "nxdomain" };
+      if (code === "ENODATA") return { records: [], error: "nodata" };
       if (code === "ESERVFAIL" || code === "EREFUSED") return { records: [], error: "servfail" };
     }
     return { records: [], error: null };
@@ -530,6 +534,18 @@ const SELECTOR_TO_PROVIDER: Partial<Record<string, EmailProvider>> = {
   sendgrid: "sendgrid",
 };
 
+/** True se o domínio resolve para algum A ou AAAA — usado para confirmar existência. */
+async function domainResolves(domain: string): Promise<boolean> {
+  try {
+    const v4 = await dns.resolve4(domain).catch(() => [] as string[]);
+    if (v4.length > 0) return true;
+    const v6 = await dns.resolve6(domain).catch(() => [] as string[]);
+    return v6.length > 0;
+  } catch {
+    return false;
+  }
+}
+
 /** Resolve registros MX com timeout, retornando hosts em minúsculas ordenados por prioridade. */
 async function resolveMxSafe(domain: string): Promise<string[]> {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
@@ -656,11 +672,19 @@ export async function scanDomain(domain: string): Promise<ScanResult> {
   const cleanDomain = normalizeDomain(domain);
 
   // Probe inicial no TXT raiz — reaproveitado como lookup SPF (evita query duplicada).
-  // Também detecta NXDOMAIN antes de fazer os outros 3 lookups.
   const spfProbe = await resolveTxtSafe(cleanDomain);
 
+  // Só declaramos "domínio não existe" se o TXT deu NXDOMAIN real E o domínio
+  // também não tem MX nem A/AAAA. Muitos domínios válidos não têm TXT na raiz
+  // (isso retorna ENODATA -> "nodata", que NÃO significa inexistente).
   if (spfProbe.error === "nxdomain") {
-    return buildDomainNotFoundResult(cleanDomain);
+    const [mxHosts, resolvable] = await Promise.all([
+      resolveMxSafe(cleanDomain),
+      domainResolves(cleanDomain),
+    ]);
+    if (mxHosts.length === 0 && !resolvable) {
+      return buildDomainNotFoundResult(cleanDomain);
+    }
   }
 
   const [spf, dkim, dmarc, mxHosts] = await Promise.all([
