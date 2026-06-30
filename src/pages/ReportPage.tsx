@@ -95,6 +95,15 @@ export default function ReportPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Impede que buscadores indexem páginas de relatório (são nominais/privadas).
+  useEffect(() => {
+    const meta = document.createElement('meta');
+    meta.name = 'robots';
+    meta.content = 'noindex, nofollow';
+    document.head.appendChild(meta);
+    return () => { document.head.removeChild(meta); };
+  }, []);
+
   useEffect(() => {
     if (!orderId) {
       setError('Pedido não informado no link.');
@@ -178,6 +187,13 @@ export default function ReportPage() {
                 <FixCard key={fix.protocol} fix={fix} />
               ))}
             </div>
+
+            {/* Nota nominal — deixa claro que o relatório é específico deste domínio */}
+            <p className="text-xs text-textsecondary text-center mt-8">
+              Relatório gerado para <strong className="text-textprimary">{report.domain}</strong> — uso pessoal.
+              Estes registros são específicos deste domínio e provedor; não funcionam em outros domínios.
+              O acesso a esta página expira 30 dias após a compra.
+            </p>
           </>
         )}
       </div>

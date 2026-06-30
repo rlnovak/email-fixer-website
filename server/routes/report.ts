@@ -3,6 +3,11 @@ import { getSupabase } from '../lib/supabase.js';
 
 const router = Router();
 
+// Janela de acesso ao relatório a partir da compra. O cliente aplica os
+// registros uma vez; mantemos um prazo generoso para reconsultas, mas o link
+// não fica eternamente compartilhável.
+const REPORT_TTL_DAYS = 30;
+
 /**
  * Retorna o relatório de correção de um pedido pago.
  * Powering a página /relatorio?order=<id> que o e-mail linka.
@@ -20,7 +25,7 @@ router.get('/:orderId', async (req, res) => {
 
   const { data: order, error } = await getSupabase()
     .from('orders')
-    .select('domain, status, fix_result, scan_result, delivered_at')
+    .select('domain, status, fix_result, scan_result, delivered_at, created_at')
     .eq('id', orderId)
     .single();
 
@@ -32,6 +37,21 @@ router.get('/:orderId', async (req, res) => {
   if (order.status !== 'paid') {
     res.status(402).json({ error: 'Pagamento pendente. O relatório fica disponível após a confirmação.' });
     return;
+  }
+
+  // Expiração: relatório acessível por REPORT_TTL_DAYS a partir da compra.
+  const createdAt = order.created_at ? new Date(order.created_at as string).getTime() : null;
+  if (createdAt) {
+    const ageDays = (Date.now() - createdAt) / (1000 * 60 * 60 * 24);
+    if (ageDays > REPORT_TTL_DAYS) {
+      res.status(410).json({
+        error: `Este relatório expirou (acesso válido por ${REPORT_TTL_DAYS} dias após a compra). ` +
+          `Se ainda precisar dos registros, escreva para o suporte.`,
+        expired: true,
+        domain: order.domain,
+      });
+      return;
+    }
   }
 
   if (!order.fix_result) {
