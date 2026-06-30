@@ -25,7 +25,7 @@ const allowedOrigins = (
   .map((o) => o.trim())
   .filter(Boolean);
 
-app.use(cors({
+const corsMiddleware = cors({
   origin: (origin, callback) => {
     // Permite requests sem Origin (curl, Stripe webhook server-to-server).
     if (!origin) return callback(null, true);
@@ -36,8 +36,13 @@ app.use(cors({
     }
     return callback(new Error(`Origem não permitida pelo CORS: ${origin}`));
   },
-  methods: ['GET', 'POST'],
-}));
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+});
+
+app.use(corsMiddleware);
+// Responde explicitamente o preflight (OPTIONS) em qualquer rota.
+app.options('/*splat', corsMiddleware);
 
 // Webhook Stripe: raw body OBRIGATÓRIO — deve vir ANTES de express.json()
 app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }), webhookRouter);
