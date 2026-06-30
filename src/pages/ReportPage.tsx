@@ -16,13 +16,16 @@ function CopyField({ label, value }: { label: string; value: string }) {
     <div>
       <span className="block text-xs font-mono uppercase tracking-wider text-textsecondary mb-1.5">{label}</span>
       <div className="relative">
-        <pre className="bg-[#15171A] text-green-300 text-sm rounded-xl p-4 pr-14 overflow-x-auto font-mono whitespace-pre-wrap break-all">
+        <pre
+          className="text-sm rounded-xl p-4 pr-24 overflow-x-auto font-mono whitespace-pre-wrap break-all border"
+          style={{ backgroundColor: '#F3F4F6', color: '#111311', borderColor: '#E5E7EB' }}
+        >
           {value}
         </pre>
         <button
           onClick={copy}
           aria-label={`Copiar ${label}`}
-          className="absolute top-2.5 right-2.5 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs transition-colors"
+          className="absolute top-2.5 right-2.5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-xs font-medium transition-colors"
         >
           {copied ? <><Check className="w-3.5 h-3.5" /> Copiado</> : <><Copy className="w-3.5 h-3.5" /> Copiar</>}
         </button>
