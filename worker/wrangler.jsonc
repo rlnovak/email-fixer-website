@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "emailcorreto-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-01",
+  // nodejs_compat: habilita APIs Node que o SDK do Stripe/Supabase possam usar.
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "vars": {
+    // Origens do frontend (Cloudflare Pages). Secrets ficam em `wrangler secret`.
+    "APP_URL": "https://email-fixer-website.pages.dev",
+    "ALLOWED_ORIGINS": "https://email-fixer-website.pages.dev,http://localhost:5173"
+  }
+  // Secrets (definir com: wrangler secret put NOME):
+  //   STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET,
+  //   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY,
+  //   RESEND_API_KEY, RESEND_FROM
+}
