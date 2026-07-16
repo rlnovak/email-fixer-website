@@ -47,6 +47,7 @@ export type Registrar =
   | "kinghost"
   | "uolhost"
   | "hostgator_br"
+  | "hostinger"
   | "cloudflare"
   | "cpanel_generic"
   | "godaddy"
@@ -143,6 +144,16 @@ function generateDmarcRecord(
 }
 
 // ─── Metadados por registrador ────────────────────────────────────────────────
+//
+// PROVENIÊNCIA das instruções de painel:
+//  - VERIFICADO contra a documentação oficial (2026-07-10):
+//      hostinger (support.hostinger.com), registro_br (registro.br).
+//  - NÃO VERIFICADO (compilado de docs/dns-research.md, gerado por pesquisa em
+//    2026-03-30; caminhos de menu podem estar desatualizados): locaweb, kinghost,
+//    uolhost, hostgator_br, cloudflare, godaddy, namecheap, google_domains,
+//    bluehost, siteground, hostgator, aws_route53.
+//  Os VALORES técnicos (SPF/DKIM/DMARC) são corretos por RFC; revisar os CAMINHOS
+//  de cada painel contra a realidade antes de escalar as vendas.
 
 interface RegistrarMeta {
   hostFormat: (name: string) => string;
@@ -190,6 +201,17 @@ const REGISTRAR_META: Record<Registrar, RegistrarMeta> = {
     extraNotes: [
       "O HostGator Brasil usa cPanel. Caminho completo: Painel de Controle → cPanel → Editor de Zona DNS → Gerenciar.",
       "Use '@' no campo 'Nome' quando o registro for para o domínio raiz.",
+    ],
+  },
+  // Fonte: support.hostinger.com — "Como Adicionar e Remover Registros TXT na Hostinger"
+  // e "Como gerenciar seus registros DNS no hPanel". Verificado em 2026-07-10.
+  hostinger: {
+    hostFormat: (n) => (n === domain_placeholder ? "@" : n),
+    hasTtl: true,
+    extraNotes: [
+      "Use '@' no campo 'Nome' (host) para o domínio raiz; para DKIM/DMARC, informe apenas o prefixo (ex.: '_dmarc' ou 'selector._domainkey'), sem repetir o domínio.",
+      "Mantenha o TTL no valor padrão (recomendado pela Hostinger).",
+      "⚠️  Se o domínio estiver apontando para outro provedor via NS, a zona DNS é gerenciada lá, não na Hostinger.",
     ],
   },
   cloudflare: {
@@ -306,6 +328,7 @@ function buildInstructions(
     kinghost:       "Acesse o painel KingHost (painel.kinghost.com.br) → Domínios → Gerenciar DNS.",
     uolhost:        "Acesse o painel UOLHost (painel.uolhost.com.br) → Domínios → Zona DNS.",
     hostgator_br:   "Acesse o HostGator Brasil (financeiro.hostgator.com.br) → Painel de Controle → cPanel → Editor de Zona DNS.",
+    hostinger:      "Acesse a Hostinger (hpanel.hostinger.com) → Domínios → selecione o domínio → Editor de Zona DNS (DNS / Gerenciamento de DNS).",
     cloudflare:     "Acesse o Cloudflare (dash.cloudflare.com) → selecione o domínio → DNS → Registros.",
     cpanel_generic: "Acesse o cPanel da sua hospedagem → Editor de Zona → clique em 'Gerenciar' ao lado do seu domínio.",
     godaddy:        "Acesse o GoDaddy (dcc.godaddy.com) → Meus Produtos → DNS → Gerenciar Zonas → selecione o domínio.",

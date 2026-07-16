@@ -15,6 +15,7 @@ const REGISTRARS = [
   { value: 'kinghost', label: 'KingHost' },
   { value: 'uolhost', label: 'UOLHost' },
   { value: 'hostgator_br', label: 'HostGator Brasil' },
+  { value: 'hostinger', label: 'Hostinger' },
   { value: 'cloudflare', label: 'Cloudflare' },
   { value: 'godaddy', label: 'GoDaddy' },
   { value: 'namecheap', label: 'Namecheap' },
