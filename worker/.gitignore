@@ -1,4 +1,9 @@
 node_modules/
 .wrangler/
 .dev.vars
+# Arquivos de secrets — NUNCA commitar (usados com `wrangler secret bulk`)
+.env
+.env.*
+!.env.example
+!.dev.vars.example
 *.log
