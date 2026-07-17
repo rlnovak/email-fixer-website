@@ -91,6 +91,7 @@ const COMMON_SELECTORS = [
   "mte2",      // Mailchimp / Mandrill (CNAME)
   "mandrill",  // Mandrill legado (TXT)
   "zoho",      // Zoho Mail
+  "resend",    // Resend (resend._domainkey)
   "s1",        // SendGrid
   "s2",        // SendGrid
   "dkim",      // genérico
