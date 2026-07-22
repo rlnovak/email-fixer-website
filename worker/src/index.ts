@@ -47,6 +47,10 @@ function sanitizeDomain(raw: string): string {
 
 const REPORT_TTL_DAYS = 30;
 
+// Preço de lançamento (promocional). PRICE_BRL = valor em reais; unit_amount em centavos.
+const PRICE_BRL = 49;
+const PRICE_CENTS = PRICE_BRL * 100;
+
 /** Envia o e-mail do relatório via REST API do Resend (fetch, compatível com Workers). */
 async function sendReportEmail(env: Env, to: string, domain: string, orderId: string): Promise<void> {
   const res = await fetch('https://api.resend.com/emails', {
@@ -137,7 +141,7 @@ app.post('/api/checkout', async (c) => {
       registrar: typeof registrar === 'string' ? registrar : null,
       email_provider: typeof emailProvider === 'string' ? emailProvider : null,
       status: 'pending',
-      amount_brl: 99,
+      amount_brl: PRICE_BRL,
       scan_result: scanResult ?? null,
     })
     .select('id')
@@ -159,7 +163,7 @@ app.post('/api/checkout', async (c) => {
             name: 'EmailCorreto — Relatório de entregabilidade',
             description: `Diagnóstico e correção DNS para ${domain}`,
           },
-          unit_amount: 9900,
+          unit_amount: PRICE_CENTS,
         },
         quantity: 1,
       }],

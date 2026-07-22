@@ -55,7 +55,7 @@ router.post('/', async (req, res) => {
       registrar: typeof registrar === 'string' ? registrar : null,
       email_provider: typeof emailProvider === 'string' ? emailProvider : null,
       status: 'pending',
-      amount_brl: 99,
+      amount_brl: 49,
       scan_result: scanResult ?? null,
     })
     .select('id')
@@ -80,7 +80,7 @@ router.post('/', async (req, res) => {
               name: 'EmailCorreto — Relatório de entregabilidade',
               description: `Diagnóstico e correção DNS para ${domain}`,
             },
-            unit_amount: 9900,
+            unit_amount: 4900,
           },
           quantity: 1,
         },
