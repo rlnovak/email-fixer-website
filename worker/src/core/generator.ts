@@ -520,17 +520,48 @@ export function generateFix(
       ttl: "3600",
     };
 
-    const upgradeNote =
-      spfFixed || dkimFixed
-        ? "⚠️  Este registro DMARC usa p=none para não interromper o fluxo de e-mails enquanto as alterações de SPF/DKIM propagam. Após 30 dias, revise os relatórios DMARC e evolua para p=quarantine e depois p=reject."
-        : "Considere evoluir para p=reject após confirmar que todos os e-mails legítimos estão passando no SPF e DKIM.";
+    // Valores prontos das 3 fases, para o cliente copiar quando evoluir a política.
+    const reportEmail = `postmaster@${domain}`;
+    const dmarcNone = `v=DMARC1; p=none; rua=mailto:${reportEmail}; ruf=mailto:${reportEmail}; pct=100; adkim=r; aspf=r`;
+    const dmarcQuarantine = `v=DMARC1; p=quarantine; rua=mailto:${reportEmail}; ruf=mailto:${reportEmail}; pct=100; adkim=r; aspf=r`;
+    const dmarcReject = `v=DMARC1; p=reject; sp=reject; rua=mailto:${reportEmail}; ruf=mailto:${reportEmail}; pct=100; adkim=r; aspf=r`;
+
+    const evolutionGuide: string[] = [
+      "",
+      "── Como fortalecer sua proteção depois (opcional, recomendado) ──",
+      "O DMARC tem 3 níveis. Começamos no mais seguro (p=none) para não bloquear",
+      "nenhum e-mail legítimo por engano. Conforme você confirma que está tudo certo,",
+      "vá subindo o nível — basta EDITAR o valor do registro _dmarc no seu DNS:",
+      "",
+      "  Fase 1 — MONITORAR (o valor que você acabou de adicionar):",
+      `    ${dmarcNone}`,
+      "    Não bloqueia nada; só coleta relatórios. Deixe por ~30 dias.",
+      "",
+      "  Fase 2 — QUARENTENA (e-mails falsos vão para o spam do destinatário):",
+      `    ${dmarcQuarantine}`,
+      "    Use depois de confirmar, pelos relatórios, que seus e-mails reais passam.",
+      "",
+      "  Fase 3 — REJEITAR (proteção máxima; e-mails falsos são bloqueados):",
+      `    ${dmarcReject}`,
+      "    Use quando tiver certeza de que 100% dos seus envios legítimos estão autenticados.",
+      "",
+      "✅ Reverificar o seu domínio aqui é GRÁTIS e ilimitado. Sempre que mudar o registro,",
+      "   volte e escaneie o domínio de novo para conferir se está tudo passando — sem pagar nada.",
+    ];
 
     fixes.push({
       protocol: "DMARC",
       action: dmarc.record ? "replace" : "add",
-      explanation: `${dmarc.record ? "Substitua" : "Adicione"} uma política DMARC para que os servidores de destino saibam o que fazer com e-mails não autenticados e enviem relatórios para você. ${upgradeNote}`,
+      explanation:
+        `${dmarc.record ? "Substitua" : "Adicione"} uma política DMARC para que os servidores de destino ` +
+        `saibam o que fazer com e-mails não autenticados e enviem relatórios para você. ` +
+        `Começamos no modo seguro (p=none): ele não bloqueia nada — apenas monitora. ` +
+        `Você pode fortalecer a proteção depois, seguindo o guia no fim das instruções (é grátis reverificar).`,
       record: dnsRecord,
-      instructions: buildInstructions(registrar, dnsRecord, dmarc.record ? "replace" : "add", "DMARC"),
+      instructions: [
+        ...buildInstructions(registrar, dnsRecord, dmarc.record ? "replace" : "add", "DMARC"),
+        ...evolutionGuide,
+      ],
     });
   }
 
