@@ -47,7 +47,7 @@ export default function HeroSection({ domain, setDomain, scanning, onScan, error
     return () => ctx.revert();
   }, []);
 
-  const headlineWords = 'Seus e-mails estão caindo no spam — e você está perdendo venda'.split(' ');
+  const headlineWords = 'Seus clientes não estão recebendo os seus e-mails?'.split(' ');
 
   return (
     <section
@@ -84,9 +84,16 @@ export default function HeroSection({ domain, setDomain, scanning, onScan, error
           ))}
         </h1>
 
+        {/* Big idea */}
+        <div className="border-l-4 border-orange-500 bg-orange-50 rounded-r-xl pl-4 pr-5 py-3 mb-6">
+          <p className="font-display font-bold text-lg sm:text-xl text-textprimary leading-snug">
+            Você está pagando pra mandar e-mail que ninguém recebe.
+          </p>
+        </div>
+
         {/* Subheadline */}
         <p className="text-lg sm:text-xl text-textsecondary mb-8 max-w-xl">
-          Verifique seu domínio em 10 segundos. Corrija em 5 minutos. SPF, DKIM e DMARC ajustados pro seu provedor, prontos pra copiar e colar.
+          Verifique seu domínio em 10 segundos. Corrija em 5 minutos. A autenticação do seu domínio ajustada pro seu provedor, pronta pra copiar e colar.
         </p>
 
         {/* Scanner Input */}
@@ -149,8 +156,11 @@ export default function HeroSection({ domain, setDomain, scanning, onScan, error
               <Clock className="w-5 h-5 text-orange-500" />
             </div>
             <div>
-              <p className="font-display font-bold text-textprimary">R$ 99</p>
-              <p className="text-xs text-textsecondary">pagamento único, sem mensalidade</p>
+              <p className="font-display font-bold text-textprimary flex items-baseline gap-1.5">
+                <span className="line-through text-textsecondary text-sm font-medium">R$ 99</span>
+                <span className="text-orange-500 text-xl">R$ 49</span>
+              </p>
+              <p className="text-xs text-textsecondary">oferta de lançamento · pagamento único</p>
             </div>
           </div>
 

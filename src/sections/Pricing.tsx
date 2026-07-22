@@ -75,7 +75,7 @@ export default function Pricing() {
   }, []);
 
   const features = [
-    'Diagnóstico completo de SPF, DKIM e DMARC',
+    'Diagnóstico completo da autenticação do seu domínio',
     'Registros DNS prontos pra copiar e colar',
     'Instruções passo a passo pro seu registrador brasileiro',
     'Detecção automática do seu provedor de e-mail',
@@ -114,7 +114,7 @@ export default function Pricing() {
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-orange-50 border border-orange-100 rounded-full mb-4">
               <Shield className="w-4 h-4 text-orange-500" />
               <span className="font-mono text-xs uppercase tracking-wider text-orange-600 font-medium">
-                Pagamento único
+                Oferta de lançamento
               </span>
             </div>
             <h3 className="font-display font-bold text-2xl text-textprimary mb-2">
@@ -124,12 +124,15 @@ export default function Pricing() {
 
           {/* Price */}
           <div className="text-center mb-8">
-            <div className="flex items-baseline justify-center gap-1">
-              <span className="font-display font-bold text-6xl text-textprimary">
-                R$ 99
+            <span className="line-through text-textsecondary text-2xl font-medium">R$ 99</span>
+            <div className="flex items-baseline justify-center gap-1 mt-1">
+              <span className="font-display font-bold text-6xl text-orange-500">
+                R$ 49
               </span>
             </div>
-            <p className="text-textsecondary mt-2">Pagamento único · Sem mensalidade · Nunca</p>
+            <p className="text-textsecondary mt-2">
+              <span className="text-orange-600 font-semibold">Preço de lançamento</span> · Pagamento único · Sem mensalidade
+            </p>
           </div>
 
           {/* Features */}

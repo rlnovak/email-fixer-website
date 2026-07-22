@@ -78,11 +78,11 @@ export default function FAQFooter() {
   const faqs = [
     {
       question: 'Por que meus e-mails caem no spam?',
-      answer: 'Na maioria das vezes é falha de autenticação: SPF, DKIM ou DMARC configurados errado ou ausentes. Sem eles, o Gmail e o Outlook não confiam no seu envio e jogam tudo no spam. O EmailCorreto identifica exatamente qual dos três está te derrubando.',
+      answer: 'Na maioria das vezes é falha na autenticação do seu domínio: os registros DNS de e-mail estão configurados errado ou ausentes. Sem eles, o Gmail e o Outlook não confiam no seu envio e jogam tudo no spam. O EmailCorreto identifica exatamente o que está te derrubando.',
     },
     {
       question: 'Funciona com Mailchimp, RD Station e outras ferramentas de e-mail?',
-      answer: 'Sim. O diagnóstico é do seu domínio, não da ferramenta. Depois de ajustar SPF, DKIM e DMARC, seus envios pelo Mailchimp, RD Station, Brevo ou qualquer outra plataforma passam a ser autenticados corretamente e param de cair no spam.',
+      answer: 'Sim. O diagnóstico é do seu domínio, não da ferramenta. Depois de ajustar a autenticação do seu domínio, seus envios pelo Mailchimp, RD Station, Brevo ou qualquer outra plataforma passam a ser autenticados corretamente e param de cair no spam.',
     },
     {
       question: 'Preciso entender de tecnologia pra aplicar?',
@@ -94,7 +94,7 @@ export default function FAQFooter() {
     },
     {
       question: 'E se não funcionar?',
-      answer: 'Você tem 7 dias de garantia. Se o kit não resolver, devolvemos os R$ 99 — sem perguntas. E como a verificação inicial é grátis, você só paga depois de já ter visto o diagnóstico do seu domínio.',
+      answer: 'Você tem 7 dias de garantia. Se o kit não resolver, devolvemos o valor pago (hoje, no preço de lançamento, apenas R$ 49 em vez de R$ 99) — sem perguntas. E como a verificação inicial é grátis, você só paga depois de já ter visto o diagnóstico do seu domínio.',
     },
   ];
 

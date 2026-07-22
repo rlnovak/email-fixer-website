@@ -77,18 +77,18 @@ export default function SpamToInbox() {
   }, []);
 
   const beforeItems = [
-    'SPF configurado errado — servidores não autorizados',
-    'DKIM ausente — nenhuma assinatura nos e-mails',
-    'DMARC não encontrado — domínio exposto a fraude',
+    'Autorização de envio errada — servidores não autorizados',
+    'Assinatura dos e-mails ausente — nada prova que o envio é seu',
+    'Proteção contra fraude não encontrada — domínio exposto',
     'E-mails caindo direto no spam do Gmail e do Outlook',
     'Clientes respondendo "não recebi seu orçamento"',
     'Reputação do domínio em queda',
   ];
 
   const afterItems = [
-    'SPF correto — só seus servidores autorizados enviam',
-    'DKIM ativo — cada e-mail assinado e verificado',
-    'DMARC configurado — domínio protegido contra fraude',
+    'Autorização de envio correta — só seus servidores enviam',
+    'Assinatura dos e-mails ativa — cada envio verificado',
+    'Proteção contra fraude configurada — domínio protegido',
     'E-mails chegando na caixa de entrada principal',
     'Orçamentos e propostas sendo lidos no mesmo dia',
     'Reputação do domínio recuperada e estável',

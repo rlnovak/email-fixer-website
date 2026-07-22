@@ -196,7 +196,7 @@ export default function DeliverySimulation() {
             </div>
 
             <p className="text-sm text-textsecondary leading-relaxed mb-6">
-              Maria disparou a campanha sem configurar SPF, DKIM e DMARC.
+              Maria disparou a campanha sem configurar a autenticação do domínio.
             </p>
 
             <div className="mb-2">
@@ -227,7 +227,7 @@ export default function DeliverySimulation() {
             </div>
 
             <p className="text-sm text-textsecondary leading-relaxed mb-6">
-              João corrigiu SPF, DKIM e DMARC antes de disparar a mesma campanha.
+              João corrigiu a autenticação do domínio antes de disparar a mesma campanha.
             </p>
 
             <div className="mb-2">
@@ -257,7 +257,7 @@ export default function DeliverySimulation() {
           <div className="flex items-start gap-3 p-4 bg-orange-50 rounded-2xl">
             <Info className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
             <p className="text-sm text-orange-700">
-              Desde fevereiro de 2024, Gmail e Yahoo barram quem não autentica o domínio. Ajustar SPF, DKIM e DMARC é o que separa <strong>12 de 96</strong>.
+              Desde fevereiro de 2024, Gmail e Yahoo barram quem não autentica o domínio. Ajustar a autenticação do seu domínio é o que separa <strong>12 de 96</strong>.
             </p>
           </div>
         </div>

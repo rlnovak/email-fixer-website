@@ -43,9 +43,9 @@ export default function AuthRecords() {
   const records = [
     {
       icon: FileText,
-      title: 'SPF',
+      title: 'Autorização de envio',
       description: 'Diz quais servidores têm permissão pra enviar e-mail em nome do seu domínio.',
-      impact: 'Sem SPF correto, qualquer servidor pode se passar por você — e o Gmail joga seu e-mail no spam.',
+      impact: 'Sem isso correto, qualquer servidor pode se passar por você — e o Gmail joga seu e-mail no spam.',
       status: 'Configurado errado',
       statusType: 'error',
       iconBg: 'bg-red-50',
@@ -53,9 +53,9 @@ export default function AuthRecords() {
     },
     {
       icon: Lock,
-      title: 'DKIM',
+      title: 'Assinatura dos e-mails',
       description: 'Assina cada e-mail com uma chave que prova que ele saiu mesmo do seu domínio.',
-      impact: 'Sem DKIM, o provedor do destinatário não confia no envio e a entrega despenca.',
+      impact: 'Sem a assinatura, o provedor do destinatário não confia no envio e a entrega despenca.',
       status: 'Ausente',
       statusType: 'error',
       iconBg: 'bg-red-50',
@@ -63,9 +63,9 @@ export default function AuthRecords() {
     },
     {
       icon: Shield,
-      title: 'DMARC',
+      title: 'Proteção contra fraude',
       description: 'Define a regra do que fazer quando um e-mail falha na verificação.',
-      impact: 'Sem DMARC, golpistas usam seu domínio em fraudes e queimam sua reputação.',
+      impact: 'Sem essa proteção, golpistas usam seu domínio em fraudes e queimam sua reputação.',
       status: 'Não encontrado',
       statusType: 'error',
       iconBg: 'bg-red-50',

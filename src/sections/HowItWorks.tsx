@@ -80,15 +80,17 @@ export default function HowItWorks() {
       number: '1',
       icon: Search,
       title: 'Verificação grátis',
-      description: 'Digite seu domínio e receba o diagnóstico completo de SPF, DKIM e DMARC em 10 segundos. Sem cadastro, sem cartão.',
+      priceTag: false,
+      description: 'Digite seu domínio e receba o diagnóstico completo da autenticação do seu domínio em 10 segundos. Sem cadastro, sem cartão.',
       color: 'bg-blue-50',
       iconColor: 'text-blue-500',
     },
     {
       number: '2',
       icon: ShoppingCart,
-      title: 'Compre o kit de correção — R$ 99',
-      description: 'Pagamento único. Você recebe os registros DNS prontos pra copiar e colar, com instruções específicas pro seu registrador: Registro.br, Locaweb, KingHost, HostGator e outros.',
+      title: 'Desbloqueie o relatório completo',
+      priceTag: true,
+      description: 'Oferta de lançamento: pagamento único. Você recebe os registros DNS prontos pra copiar e colar, com instruções específicas pro seu registrador: Registro.br, Locaweb, KingHost, HostGator e outros.',
       color: 'bg-orange-50',
       iconColor: 'text-orange-500',
     },
@@ -96,6 +98,7 @@ export default function HowItWorks() {
       number: '3',
       icon: RefreshCw,
       title: 'Reverifique quantas vezes quiser',
+      priceTag: false,
       description: 'Aplicou os registros? Reverifique de graça, quantas vezes precisar, pra sempre. Acesso vitalício, sem cobrança extra.',
       color: 'bg-green-50',
       iconColor: 'text-green-500',
@@ -158,6 +161,13 @@ export default function HowItWorks() {
               <h3 className="font-display font-bold text-xl text-textprimary mb-3">
                 {step.title}
               </h3>
+              {step.priceTag && (
+                <div className="inline-flex items-baseline gap-2 mb-3 px-3 py-1.5 rounded-lg bg-orange-50 border border-orange-100">
+                  <span className="line-through text-textsecondary text-sm">R$ 99</span>
+                  <span className="font-display font-bold text-xl text-orange-500">R$ 49</span>
+                  <span className="text-xs text-orange-600 font-medium">lançamento</span>
+                </div>
+              )}
               <p className="text-textsecondary leading-relaxed">
                 {step.description}
               </p>

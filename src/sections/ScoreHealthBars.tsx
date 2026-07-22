@@ -63,9 +63,9 @@ export default function ScoreHealthBars() {
   }, []);
 
   const healthBars = [
-    { label: 'SPF', percentage: 40, color: 'bg-red-500', status: 'Configurado errado' },
-    { label: 'DKIM', percentage: 0, color: 'bg-red-500', status: 'Ausente' },
-    { label: 'DMARC', percentage: 0, color: 'bg-red-500', status: 'Não encontrado' },
+    { label: 'Autorização de envio', percentage: 40, color: 'bg-red-500', status: 'Configurado errado' },
+    { label: 'Assinatura dos e-mails', percentage: 0, color: 'bg-red-500', status: 'Ausente' },
+    { label: 'Proteção contra fraude', percentage: 0, color: 'bg-red-500', status: 'Não encontrado' },
   ];
 
   // SVG circle progress
@@ -136,8 +136,8 @@ export default function ScoreHealthBars() {
           {healthBars.map((bar) => (
             <div key={bar.label} className="bar-container">
               <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-3">
-                  <span className="font-display font-semibold text-textprimary w-16">
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span className="font-display font-semibold text-textprimary">
                     {bar.label}
                   </span>
                   <span className={`text-sm ${

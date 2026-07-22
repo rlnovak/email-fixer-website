@@ -1,7 +1,7 @@
 import { useRef, useLayoutEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Copy, Check, FileCode, ExternalLink } from 'lucide-react';
+import { FileCode, ExternalLink, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -11,7 +11,6 @@ export default function FixKit() {
   const cardRef = useRef<HTMLDivElement>(null);
   const blocksRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  const [copied, setCopied] = useState<string | null>(null);
   const [captureEmail, setCaptureEmail] = useState('');
   const [captureRegistrar, setCaptureRegistrar] = useState('');
 
@@ -54,27 +53,21 @@ export default function FixKit() {
     return () => ctx.revert();
   }, []);
 
-  const handleCopy = (text: string, label: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(label);
-    setTimeout(() => setCopied(null), 2000);
-  };
-
   const dnsRecords = [
     {
-      label: 'SPF',
+      label: 'Autorização de envio',
       value: 'v=spf1 include:_spf.google.com include:sendgrid.net ~all',
-      description: 'Autoriza Google e SendGrid a enviar e-mails',
+      description: 'Autoriza os servidores certos a enviar em nome do seu domínio',
     },
     {
-      label: 'DKIM',
+      label: 'Assinatura dos e-mails',
       value: 'v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC...',
-      description: 'Chave pública para verificação de assinatura',
+      description: 'Prova que o e-mail saiu mesmo do seu domínio',
     },
     {
-      label: 'DMARC',
+      label: 'Proteção contra fraude',
       value: 'v=DMARC1; p=quarantine; rua=mailto:dmarc@seuempresa.com.br',
-      description: 'Política de tratamento para falhas de autenticação',
+      description: 'Define a regra quando um e-mail falha na verificação',
     },
   ];
 
@@ -120,27 +113,25 @@ export default function FixKit() {
                   <span className="text-xs text-textsecondary">—</span>
                   <span className="text-xs text-textsecondary">{record.description}</span>
                 </div>
-                <button
-                  onClick={() => handleCopy(record.value, record.label)}
-                  className="flex items-center gap-1.5 text-sm text-orange-500 hover:text-orange-600 transition-colors"
-                >
-                  {copied === record.label ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      Copiado!
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4" />
-                      Copiar
-                    </>
-                  )}
-                </button>
+                <span className="flex items-center gap-1.5 text-sm text-textsecondary">
+                  <Lock className="w-4 h-4 text-orange-500" />
+                  Bloqueado
+                </span>
               </div>
-              <div className="p-4 bg-[#15171A] rounded-xl overflow-x-auto border border-black/5">
-                <code className="font-mono text-sm text-green-400 whitespace-nowrap">
+              <div className="relative p-4 bg-[#15171A] rounded-xl overflow-hidden border border-black/5">
+                <code
+                  className="font-mono text-sm text-green-400 whitespace-nowrap select-none"
+                  style={{ filter: 'blur(6px)', userSelect: 'none', pointerEvents: 'none' }}
+                  aria-hidden="true"
+                >
                   {record.value}
                 </code>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-medium text-white bg-white/10 border border-white/20 rounded-full px-3 py-1 backdrop-blur-sm">
+                    <Lock className="w-3.5 h-3.5 text-orange-400" />
+                    Liberado no relatório completo
+                  </span>
+                </div>
               </div>
             </div>
           ))}
@@ -182,7 +173,11 @@ export default function FixKit() {
           <Button
             className="h-14 px-8 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition-all hover:-translate-y-0.5"
           >
-            Corrigir meu domínio — R$ 99
+            <span className="flex items-center gap-2">
+              Corrigir meu domínio —
+              <span className="line-through opacity-70">R$ 99</span>
+              <strong className="font-bold">R$ 49</strong>
+            </span>
           </Button>
           <button className="flex items-center gap-2 text-textsecondary hover:text-textprimary font-medium transition-colors group">
             Ver exemplo de relatório

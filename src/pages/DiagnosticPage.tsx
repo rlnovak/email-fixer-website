@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CheckCircle, AlertTriangle, XCircle, ArrowLeft, ShieldCheck, Loader2 } from 'lucide-react';
+import { CheckCircle, AlertTriangle, XCircle, ArrowLeft, ShieldCheck, Loader2, Lock } from 'lucide-react';
 import {
   scanDomain,
   createCheckout,
@@ -29,9 +29,39 @@ const STATUS_META: Record<Status, { label: string; color: string; bg: string; Ic
   fail: { label: 'Problema', color: '#FF3B3B', bg: 'bg-red-50', Icon: XCircle },
 };
 
-function ProtocolRow({ name, result }: { name: string; result: { status: Status; issues: string[]; impact: string } }) {
+// Rótulos leigos + impacto de negócio (sem jargão técnico e sem revelar a solução).
+const PROTOCOL_META: Record<'spf' | 'dkim' | 'dmarc', { label: string; businessImpact: string }> = {
+  spf: {
+    label: 'Autorização de envio',
+    businessImpact:
+      'Sem isso ajustado, o Gmail desconfia de quem está enviando e joga seus e-mails no spam — e o cliente nunca vê seu orçamento.',
+  },
+  dkim: {
+    label: 'Assinatura dos e-mails',
+    businessImpact:
+      'Sem a assinatura correta, o provedor do destinatário não confia no seu envio e sua taxa de entrega despenca — vendas e leads perdidos.',
+  },
+  dmarc: {
+    label: 'Proteção contra fraude',
+    businessImpact:
+      'Sem essa proteção, seu domínio fica exposto a golpes e sua reputação cai — mais e-mails legítimos parando no spam.',
+  },
+};
+
+function ProtocolRow({
+  protocol,
+  result,
+}: {
+  protocol: 'spf' | 'dkim' | 'dmarc';
+  result: { status: Status; issues: string[]; impact: string };
+}) {
   const meta = STATUS_META[result.status];
+  const info = PROTOCOL_META[protocol];
   const { Icon } = meta;
+  const isProblem = result.status !== 'pass';
+  // Texto técnico que ensina a solução — fica borrado atrás do cadeado.
+  const lockedDetail = result.issues.length > 0 ? result.issues[0] : result.impact;
+
   return (
     <div className="flex items-start gap-4 p-5 rounded-2xl border border-gray-100 bg-white">
       <span className={`w-10 h-10 rounded-xl ${meta.bg} flex items-center justify-center flex-shrink-0`}>
@@ -39,7 +69,7 @@ function ProtocolRow({ name, result }: { name: string; result: { status: Status;
       </span>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
-          <span className="font-display font-bold text-textprimary">{name}</span>
+          <span className="font-display font-bold text-textprimary">{info.label}</span>
           <span
             className="text-xs font-mono uppercase tracking-wider px-2 py-0.5 rounded-full"
             style={{ color: meta.color, backgroundColor: `${meta.color}1A` }}
@@ -47,9 +77,30 @@ function ProtocolRow({ name, result }: { name: string; result: { status: Status;
             {meta.label}
           </span>
         </div>
+
+        {/* Impacto de negócio — sempre visível (não ensina a resolver) */}
         <p className="text-sm text-textsecondary leading-relaxed">
-          {result.issues.length > 0 ? result.issues[0] : result.impact}
+          {isProblem ? info.businessImpact : 'Este item está corretamente configurado no seu domínio.'}
         </p>
+
+        {/* Detalhe técnico acionável — ofuscado atrás do cadeado */}
+        {isProblem && (
+          <div className="relative mt-3 rounded-xl border border-gray-100 bg-gray-50 overflow-hidden">
+            <p
+              className="text-sm text-textsecondary leading-relaxed p-3 select-none"
+              style={{ filter: 'blur(6px)', userSelect: 'none', pointerEvents: 'none' }}
+              aria-hidden="true"
+            >
+              {lockedDetail}
+            </p>
+            <div className="absolute inset-0 flex items-center justify-center bg-white/30">
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-textprimary bg-white/90 border border-gray-200 rounded-full px-3 py-1 shadow-sm">
+                <Lock className="w-3.5 h-3.5 text-orange-500" />
+                Desbloqueie a solução no relatório completo
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -176,21 +227,22 @@ export default function DiagnosticPage() {
                   <ShieldCheck className="w-7 h-7 text-[#27D07C]" /> Está tudo certo!
                 </h1>
                 <p className="text-textsecondary">
-                  Seu SPF, DKIM e DMARC estão corretamente configurados. Seus e-mails têm tudo
+                  A autenticação do seu domínio está corretamente configurada. Seus e-mails têm tudo
                   para chegar na caixa de entrada. Não há nada a corrigir.
                 </p>
               </>
             ) : (
               <>
                 <h1 className="font-display font-bold text-display-2 text-textprimary mb-2">
-                  {issueCount === 1 ? 'Encontramos 1 problema' : `Encontramos ${issueCount} problemas`} de
-                  autenticação
+                  Você tem {issueCount === 1 ? '1 problema' : `${issueCount} problemas`} travando a
+                  entrega dos seus e-mails
                 </h1>
                 <p className="text-textsecondary">
                   Provedor detectado: <strong className="text-textprimary">
                     {scan.detectedProvider.provider === 'unknown' ? 'não identificado' : scan.detectedProvider.provider}
-                  </strong>. Isso reduz a entrega dos seus e-mails. O relatório completo traz os
-                  registros DNS corrigidos, prontos para copiar e colar.
+                  </strong>. Enquanto isso não é corrigido, seus e-mails estão caindo no spam — ou seja,
+                  vendas e leads perdidos. Veja exatamente como resolver no relatório completo, com a
+                  configuração pronta para copiar e colar.
                 </p>
               </>
             )}
@@ -200,22 +252,31 @@ export default function DiagnosticPage() {
 
       {/* Protocolos */}
       <div className="grid gap-4 mb-8">
-        <ProtocolRow name="SPF" result={scan.spf} />
-        <ProtocolRow name="DKIM" result={scan.dkim} />
-        <ProtocolRow name="DMARC" result={scan.dmarc} />
+        <ProtocolRow protocol="spf" result={scan.spf} />
+        <ProtocolRow protocol="dkim" result={scan.dkim} />
+        <ProtocolRow protocol="dmarc" result={scan.dmarc} />
       </div>
 
       {/* CTA de compra — só quando há problemas */}
       {!healthy && (
         <div className="bg-white rounded-[28px] card-shadow card-border p-8">
           <h2 className="font-display font-bold text-xl text-textprimary mb-2">
-            Receba os registros corrigidos
+            Desbloqueie o relatório completo
           </h2>
           <p className="text-textsecondary mb-6">
-            Registros SPF, DKIM e DMARC prontos + instruções passo a passo para o seu registrador.
-            Pagamento único de <strong className="text-textprimary">R$ 99</strong>, sem mensalidade.
-            Enviamos por e-mail e liberamos a página do relatório na hora.
+            A configuração de e-mail do seu domínio corrigida e pronta + instruções passo a passo
+            para o seu registrador. Enviamos por e-mail e liberamos a página do relatório na hora.
           </p>
+
+          {/* Preço com promoção de lançamento */}
+          <div className="inline-flex items-center gap-3 mb-6 px-4 py-3 rounded-2xl bg-orange-50 border border-orange-100">
+            <span className="font-mono text-xs uppercase tracking-wider text-orange-600 font-semibold">
+              Oferta de lançamento
+            </span>
+            <span className="line-through text-textsecondary text-lg">R$ 99</span>
+            <span className="font-display font-bold text-3xl text-orange-500 leading-none">R$ 49</span>
+            <span className="text-xs text-textsecondary">pagamento único, sem mensalidade</span>
+          </div>
 
           <div className="grid sm:grid-cols-2 gap-3 mb-4">
             <input
@@ -247,7 +308,11 @@ export default function DiagnosticPage() {
             {checkingOut ? (
               <><Loader2 className="w-5 h-5 animate-spin" /> Redirecionando...</>
             ) : (
-              'Corrigir meu domínio — R$ 99'
+              <span className="flex items-center gap-2">
+                Desbloquear relatório —
+                <span className="line-through opacity-70">R$ 99</span>
+                <strong className="font-bold">R$ 49</strong>
+              </span>
             )}
           </button>
           <p className="text-xs text-textsecondary mt-3">

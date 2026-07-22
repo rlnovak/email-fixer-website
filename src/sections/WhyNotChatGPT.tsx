@@ -81,12 +81,12 @@ export default function WhyNotChatGPT() {
     {
       icon: FileQuestion,
       title: 'Conselho genérico não resolve',
-      description: 'Você recebe um modelo padrão de SPF que serve pra todo mundo e pra ninguém. Cada provedor exige valores específicos — e o seu caso é o seu caso.',
+      description: 'Você recebe um modelo padrão de configuração que serve pra todo mundo e pra ninguém. Cada provedor exige valores específicos — e o seu caso é o seu caso.',
     },
     {
       icon: SearchX,
       title: 'Ele não enxerga o que já está lá',
-      description: 'Talvez você já tenha um SPF meio certo, um DKIM pela metade. Sem ver isso, qualquer sugestão pode entrar em conflito com o que já existe.',
+      description: 'Talvez você já tenha uma parte da configuração meio certa e outra pela metade. Sem ver isso, qualquer sugestão pode entrar em conflito com o que já existe.',
     },
     {
       icon: AlertTriangle,

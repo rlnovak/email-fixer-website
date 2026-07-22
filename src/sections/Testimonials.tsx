@@ -65,13 +65,13 @@ export default function Testimonials() {
       company: 'Curitiba',
     },
     {
-      quote: 'Uso Google Workspace e nem sabia o que era DKIM. O diagnóstico mostrou tudo mastigado e os valores vieram prontos. Colei no Registro.br e resolveu.',
+      quote: 'Uso Google Workspace e não entendo nada de configuração de e-mail. O diagnóstico mostrou tudo mastigado e os valores vieram prontos. Colei no Registro.br e resolveu.',
       author: 'Fernanda Lopes',
       role: 'consultora financeira',
       company: 'São Paulo',
     },
     {
-      quote: 'Nossa taxa de abertura dobrou depois que os e-mails pararam de cair no spam. R$ 99 uma vez resolveu um problema que me custava venda todo mês.',
+      quote: 'Nossa taxa de abertura dobrou depois que os e-mails pararam de cair no spam. Menos de R$ 50 uma vez resolveu um problema que me custava venda todo mês.',
       author: 'Rodrigo Menezes',
       role: 'gestor de e-commerce',
       company: 'Belo Horizonte',
