@@ -114,8 +114,8 @@ export default function DiagnosticDashboard({ scanComplete }: DiagnosticDashboar
               <Shield className="w-5 h-5 text-green-600" />
             </div>
             <div>
-              <p className="font-mono text-xs uppercase tracking-wider text-green-700">Blacklists</p>
-              <p className="font-display font-semibold text-green-800">Limpo · 0 listas</p>
+              <p className="font-mono text-xs uppercase tracking-wider text-green-700">Provedor</p>
+              <p className="font-display font-semibold text-green-800">Detectado</p>
             </div>
           </div>
 

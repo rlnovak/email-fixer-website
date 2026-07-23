@@ -161,9 +161,12 @@ export default function FixKit() {
               <option value="kinghost">KingHost</option>
               <option value="uolhost">UOLHost</option>
               <option value="hostgator_br">HostGator Brasil</option>
+              <option value="hostinger">Hostinger</option>
               <option value="cloudflare">Cloudflare</option>
               <option value="godaddy">GoDaddy</option>
-              <option value="outro">Outro</option>
+              <option value="namecheap">Namecheap</option>
+              <option value="aws_route53">AWS Route 53</option>
+              <option value="other">Outro / não sei</option>
             </select>
           </div>
         </div>

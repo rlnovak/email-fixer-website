@@ -58,7 +58,6 @@ export function buildEmailHtml(domain: string, orderId: string): string {
                 ${[
                   'Registros SPF, DKIM e DMARC prontos para copiar e colar',
                   'Instruções específicas para o seu registrador de domínio',
-                  'Verificação em mais de 50 blacklists',
                   'Reverificações ilimitadas — acesso vitalício',
                 ].map(item => `
                 <tr>

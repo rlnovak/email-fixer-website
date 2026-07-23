@@ -9,7 +9,6 @@ import HeroSection from './sections/HeroSection';
 import DiagnosticDashboard from './sections/DiagnosticDashboard';
 import ScoreHealthBars from './sections/ScoreHealthBars';
 import AuthRecords from './sections/AuthRecords';
-import BlacklistCheck from './sections/BlacklistCheck';
 import FixKit from './sections/FixKit';
 import SpamToInbox from './sections/SpamToInbox';
 import DeliverySimulation from './sections/DeliverySimulation';
@@ -59,7 +58,6 @@ function App() {
         <DiagnosticDashboard scanComplete={true} />
         <ScoreHealthBars />
         <AuthRecords />
-        <BlacklistCheck />
         <FixKit />
         <DeliverySimulation />
         <SpamToInbox />
