@@ -113,20 +113,34 @@ function generateSpfRecord(
 ): { record: string; action: "add" | "replace" } {
   const include = SPF_INCLUDES[provider];
 
-  let mechanisms = "v=spf1";
-
-  if (include) {
-    mechanisms += ` ${include}`;
-  } else {
-    mechanisms += " ip4:IP_DO_SEU_SERVIDOR_EMAIL";
+  // Caso 1: NÃO existe SPF → gerar do zero (só o include do provedor detectado).
+  if (!existingRecord) {
+    const mech = include ? `v=spf1 ${include} ~all` : "v=spf1 ip4:IP_DO_SEU_SERVIDOR_EMAIL ~all";
+    return { record: mech, action: "add" };
   }
 
-  mechanisms += " ~all";
+  // Caso 2: JÁ existe SPF → PRESERVAR o que está lá. Nunca descartar includes/IPs
+  // (o domínio pode enviar por vários provedores — HubSpot, Mandrill, etc.).
+  // Só ajustamos cirurgicamente: (a) garantir que o include do provedor detectado
+  // esteja presente; (b) NÃO mexer no qualificador `all` aqui (isso é recomendação,
+  // tratada como issue no scanner — não regeneramos por causa disso).
+  let record = existingRecord.trim();
 
-  return {
-    record: mechanisms,
-    action: existingRecord ? "replace" : "add",
-  };
+  const includeMissing = include && !record.includes(include.replace("include:", ""));
+  if (includeMissing) {
+    // Insere o include ANTES do mecanismo `all` final, preservando todo o resto.
+    const allMatch = record.match(/\s+[+~?-]?all\s*$/i);
+    if (allMatch) {
+      record = record.slice(0, allMatch.index) + ` ${include}` + allMatch[0];
+    } else {
+      record = `${record} ${include}`;
+    }
+    return { record, action: "replace" };
+  }
+
+  // O SPF já cobre o provedor detectado e está funcional — não há o que substituir.
+  // Retornamos o registro atual inalterado; o chamador decide não gerar um "fix".
+  return { record, action: "replace" };
 }
 
 // ─── Gerador de registro DMARC ────────────────────────────────────────────────
@@ -385,24 +399,44 @@ export function generateFix(
   // ── SPF ──────────────────────────────────────────────────────────────────
   if (spf.status !== "pass") {
     const { record: spfValue, action } = generateSpfRecord(domain, emailProvider, spf.record);
+    const spfUnchanged = spf.record !== null && spfValue.trim() === spf.record.trim();
 
-    const dnsRecord: DnsRecord = {
-      name: resolveHostName(registrar, domain_placeholder, domain),
-      type: "TXT",
-      value: spfValue,
-      ttl: "3600",
-    };
-
-    fixes.push({
-      protocol: "SPF",
-      action,
-      explanation:
-        action === "replace"
-          ? `Substitua seu registro SPF atual por um que autorize corretamente o ${PROVIDER_LABELS[emailProvider]}.`
-          : `Adicione um registro SPF para informar aos servidores de destino quais remetentes estão autorizados a enviar e-mails por ${domain}.`,
-      record: dnsRecord,
-      instructions: buildInstructions(registrar, dnsRecord, action, "SPF"),
-    });
+    if (spfUnchanged) {
+      // SPF JÁ EXISTE e já cobre o provedor — está funcional, só tem avisos (ex.:
+      // ~all). NÃO substituímos (isso poderia descartar includes de outros
+      // provedores). Mostramos apenas a recomendação de ajuste fino.
+      fixes.push({
+        protocol: "SPF",
+        action: "none",
+        explanation:
+          `Seu SPF já está publicado e funcional — não mexa nele sem necessidade. ` +
+          `Há apenas um ajuste opcional a considerar (veja abaixo). ` +
+          `NÃO recomendamos substituir o registro: ele pode autorizar vários serviços de envio que você usa.`,
+        record: { name: resolveHostName(registrar, domain_placeholder, domain), type: "TXT", value: spf.record!, ttl: "3600" },
+        instructions: [
+          `1. Seu SPF atual: ${spf.record}`,
+          ...spf.issues.map((iss, i) => `${i + 2}. ${iss}`),
+          `${spf.issues.length + 2}. Se decidir aplicar algum ajuste, EDITE o registro existente preservando todos os "include:" e IPs já presentes — nunca apague os outros serviços de envio.`,
+        ],
+      });
+    } else {
+      const dnsRecord: DnsRecord = {
+        name: resolveHostName(registrar, domain_placeholder, domain),
+        type: "TXT",
+        value: spfValue,
+        ttl: "3600",
+      };
+      fixes.push({
+        protocol: "SPF",
+        action,
+        explanation:
+          action === "replace"
+            ? `Ajuste seu registro SPF para incluir também o ${PROVIDER_LABELS[emailProvider]}. O valor abaixo PRESERVA o que você já tinha e apenas acrescenta o que faltava — confira antes de salvar.`
+            : `Adicione um registro SPF para informar aos servidores de destino quais remetentes estão autorizados a enviar e-mails por ${domain}.`,
+        record: dnsRecord,
+        instructions: buildInstructions(registrar, dnsRecord, action, "SPF"),
+      });
+    }
   }
 
   // ── DKIM ─────────────────────────────────────────────────────────────────
@@ -508,10 +542,35 @@ export function generateFix(
 
   // ── DMARC ─────────────────────────────────────────────────────────────────
   if (dmarc.status !== "pass") {
+    const dmarcName = resolveHostName(registrar, `_dmarc.${domain}`, domain);
+    const reportEmail = `postmaster@${domain}`;
+
+    // CASO CRÍTICO: já existe DMARC com política FORTE (quarantine/reject).
+    // NUNCA rebaixar. Preservar e apenas apontar o ajuste que falta (ex.: sp=).
+    if (dmarc.record && (dmarc.policy === "reject" || dmarc.policy === "quarantine")) {
+      const advice: string[] = [`1. Seu DMARC atual: ${dmarc.record}`];
+      let n = 2;
+      advice.push(
+        `${n++}. ✅ Sua política já está em "p=${dmarc.policy}" — isso é uma proteção FORTE. NÃO rebaixe para p=none.`
+      );
+      for (const iss of dmarc.issues) advice.push(`${n++}. ${iss}`);
+      advice.push(
+        `${n++}. Se aplicar algum ajuste, EDITE o registro existente preservando "p=${dmarc.policy}" e as tags de relatório (rua/ruf). Não substitua o registro inteiro.`
+      );
+      fixes.push({
+        protocol: "DMARC",
+        action: "none",
+        explanation:
+          `Seu DMARC já está publicado com uma política forte (p=${dmarc.policy}) — não recomendamos substituir. ` +
+          `Há apenas um ajuste opcional a considerar (veja abaixo). Rebaixar para p=none enfraqueceria sua proteção.`,
+        record: { name: dmarcName, type: "TXT", value: dmarc.record, ttl: "3600" },
+        instructions: advice,
+      });
+    } else {
+
     const spfFixed = spf.status !== "pass";
     const dkimFixed = dkim.status !== "pass";
     const dmarcValue = generateDmarcRecord(domain, spfFixed, dkimFixed, dmarc.policy);
-    const dmarcName = resolveHostName(registrar, `_dmarc.${domain}`, domain);
 
     const dnsRecord: DnsRecord = {
       name: dmarcName,
@@ -521,7 +580,6 @@ export function generateFix(
     };
 
     // Valores prontos das 3 fases, para o cliente copiar quando evoluir a política.
-    const reportEmail = `postmaster@${domain}`;
     const dmarcNone = `v=DMARC1; p=none; rua=mailto:${reportEmail}; ruf=mailto:${reportEmail}; pct=100; adkim=r; aspf=r`;
     const dmarcQuarantine = `v=DMARC1; p=quarantine; rua=mailto:${reportEmail}; ruf=mailto:${reportEmail}; pct=100; adkim=r; aspf=r`;
     const dmarcReject = `v=DMARC1; p=reject; sp=reject; rua=mailto:${reportEmail}; ruf=mailto:${reportEmail}; pct=100; adkim=r; aspf=r`;
@@ -563,6 +621,7 @@ export function generateFix(
         ...evolutionGuide,
       ],
     });
+    } // fim do else (DMARC ausente ou fraco)
   }
 
   const issueCount = fixes.length;

@@ -91,6 +91,8 @@ const COMMON_SELECTORS = [
   "mte1",      // Mailchimp / Mandrill (CNAME, obrigatório desde mar/2024)
   "mte2",      // Mailchimp / Mandrill (CNAME)
   "mandrill",  // Mandrill legado (TXT)
+  "hs1",       // HubSpot
+  "hs2",       // HubSpot
   "zoho",      // Zoho Mail
   "resend",    // Resend (resend._domainkey)
   "s1",        // SendGrid
